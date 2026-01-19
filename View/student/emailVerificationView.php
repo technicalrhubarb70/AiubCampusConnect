@@ -6,7 +6,7 @@ session_start();
 <!doctype
 <html> 
     <head>
-
+        <link rel="stylesheet" href="otp.css">
     </head>
     <body>
         <form action="../../Controller/emailVerificationtoDB.php" method="POST" >
