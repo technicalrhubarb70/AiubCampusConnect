@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST"){
             $hasErr=true;
         }
 
-        if(!hasErr){
+        if(!$hasErr){
             $path = $upload_dir . basename($file["name"]);
             $_SESSION["img_name"]=$file["tmp_name"];
         }
