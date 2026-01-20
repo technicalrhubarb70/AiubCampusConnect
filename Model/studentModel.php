@@ -40,12 +40,33 @@
     function getDataByIdPassword($id, $role)
     {
         $conn = dbConnect();
+    function updatePassword($id,$password){
+        
+        $query="UPDATE student SET s_password='$password' WHERE s_id='$id' ";
+        $conn=dbConnect();
+
+        $data=mysqli_query($conn,$query);
+    }
+    
+    function getDataById($id,$role){
+        
+        $query="SELECT * FROM student WHERE s_id=$id AND role=$role";
+        $conn=dbConnect();
 
         $id = mysqli_real_escape_string($conn, $id);
         $role = (int)$role;
 
         $query = "SELECT * FROM student WHERE s_id = '$id' AND role = $role";
         return mysqli_query($conn, $query);
+    }
+
+    function getStudentByEmail($email){ 
+        $query="SELECT * FROM student WHERE s_email='$email'";
+        $conn=dbConnect();
+
+        $data=mysqli_query($conn,$query);
+        $student=mysqli_fetch_assoc($data);
+        return $student;
     }
 
     function getAllData(){

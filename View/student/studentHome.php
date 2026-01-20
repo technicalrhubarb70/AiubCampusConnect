@@ -12,6 +12,15 @@ if (!$student) {
 $skillsRes = getSkillsByStudent($_SESSION['userId']);
 
 ?>
+
+if ($_SESSION['role'] != 2) {
+    header("Location:../loginView.php");
+    exit();
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -88,7 +88,8 @@ if ($_SERVER["REQUEST_METHOD"]=="POST"){
         $_SESSION['s_id']=$s_id;
         $_SESSION['s_name']=$name;
         $_SESSION['s_gender']=$gender;
-        $_SESSION['s_password']=$pass;
+        $_SESSION['real_password']=$pass;
+        $_SESSION['s_password']= password_hash($pass, PASSWORD_DEFAULT);
         $_SESSION['s_email']=$email;
         $_SESSION['img_path']=$path;
 

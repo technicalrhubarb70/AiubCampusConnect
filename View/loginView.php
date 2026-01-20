@@ -35,8 +35,9 @@
                     <input type="reset" name="reset" value="Reset" class="btn btn-secondary">
                 </fieldset>
             </form>
-            
+            <br><a style="color: white;" href="forgetPasswordView.php" class="forgot-pass-link">Forgot Password?</a></br>
             <button class="btn btn-outline" onclick="window.location.href='student/signUpView.php'">Sign Up</button>
+
         </section>
     </main>
 </body>

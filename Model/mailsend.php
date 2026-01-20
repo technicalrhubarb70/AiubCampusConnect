@@ -31,7 +31,30 @@ function sendOtp($email,$otp){
         return false;
     }
 }
+function sendMessage($email,$id,$password){
 
+    $mail = new PHPMailer();
+
+    // SMTP SETTINGS
+    $mail->isSMTP();
+    $mail->Host       = 'smtp.gmail.com';
+    $mail->SMTPAuth   = true;
+    $mail->Username   = 'rafitrahad28@gmail.com';     // your email
+    $mail->Password   = 'atlk opmy gpdn tqip';   // Gmail App Password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port       = 587;
+
+    // EMAIL CONTENT
+    $mail->setFrom('rafitrahad28@gmail.com', 'AIUB Campus Connect');
+    $mail->addAddress($email);
+    $mail->Subject = 'Your Account Details';
+    $mail->Body    = "Your Id is: $id, Password is:$password \n\nDo not share this Id and Password.";
+    if($mail->send()) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 
 ?>
