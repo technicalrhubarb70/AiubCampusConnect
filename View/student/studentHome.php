@@ -1,3 +1,14 @@
+<?php
+session_start();
+
+if ($_SESSION['role'] != 2) {
+    header("Location:../loginView.php");
+    exit();
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

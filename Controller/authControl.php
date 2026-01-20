@@ -48,7 +48,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
             {
                 if($user["status"]==1)
                 {
-                    $_SESSION['userId']=$user['a_id'];
+                    $_SESSION['loginId']=$user['a_id'];
                     $_SESSION['role']=$user['role'];
 
                     header("Location:../View/admin/adminHome.php");
@@ -68,9 +68,10 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
             {
                 if($user["status"]==1)
                 {
-                    $_SESSION['userId']=$user['login_id'];
+                    $_SESSION['loginId']=$user['login_id'];
                     $_SESSION['role']=$user['role'];
-                    header("Location: ../View/student/studentHome.php"); exit();
+                    //header("Location: ../View/setFreeTimeView.php");
+                    header("Location:../View/student/studentHome.php");
                     exit();
                 }
             }
@@ -86,7 +87,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
                 if($user["status"]==1)
                 {
                         
-                    $_SESSION['userId']=$user['t_id'];
+                    $_SESSION['loginId']=$user['login_id'];
                     $_SESSION['role']=$user['role'];
 
                     header("Location:../View/tutor/tutorHome.php");
@@ -114,7 +115,6 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
     }
 
 }
-
 ?>
 
 

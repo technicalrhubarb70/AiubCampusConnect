@@ -16,7 +16,7 @@
         <!-- Logo -->
         <div class="logo-wrapper">
             <img src="../../Model/Resources/signup.png" class="signup-image" alt="Signup Image">
-
+            
         </div>
 
         <h2>Create Account</h2>
@@ -60,6 +60,7 @@
                 <input type="submit" name="submit" value="Submit">
                 <input type="reset" name="reset" value="Reset">
             </div>
+            <label style="color: white;" >Already have an account? <a style="color: white;" href="../loginView.php">Login here</a></label>
 
         </form>
 
