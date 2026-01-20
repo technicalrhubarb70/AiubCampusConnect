@@ -31,7 +31,7 @@
                 <span class="error-message error-login"><?php if(isset($_GET["loginErr"])){echo $_GET["loginErr"];} ?></span>
 
                 <fieldset class="button-row">
-                    <input type="submit" name="submit" value="Submit" class="btn btn-primary">
+                    <input type="submit" name="submit" value="Login" class="btn btn-primary">
                     <input type="reset" name="reset" value="Reset" class="btn btn-secondary">
                 </fieldset>
             </form>
