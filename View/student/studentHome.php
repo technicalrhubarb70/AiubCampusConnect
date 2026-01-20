@@ -1,5 +1,17 @@
 <?php
 session_start();
+require_once("../../Model/studentModel.php");
+$student = mysqli_fetch_assoc(getStudentById($_SESSION['userId']));
+
+if (!$student) {
+  $student = [
+    's_name' => 'Unknown',
+    'status' => 0
+  ];
+}
+$skillsRes = getSkillsByStudent($_SESSION['userId']);
+
+?>
 
 if ($_SESSION['role'] != 2) {
     header("Location:../loginView.php");
@@ -36,8 +48,9 @@ if ($_SESSION['role'] != 2) {
         <summary class="profile-btn">
           <span class="avatar" aria-hidden="true"></span>
           <span class="profile-meta">
-            <strong class="profile-name">Student Name</strong>
-            <small class="profile-role">23-50723-1</small>
+            <strong class="profile-name"><?php echo htmlspecialchars($student['s_name']); ?></strong>
+            <small class="profile-role">ID: <?php echo htmlspecialchars($_SESSION['userId']); ?></small>
+
           </span>
           <span class="chev" aria-hidden="true"></span>
         </summary>
@@ -53,12 +66,17 @@ if ($_SESSION['role'] != 2) {
             </label>
           </li>
 
-          <li><button class="menu-item" type="button">Add skills</button></li>
-          <li><button class="menu-item" type="button">Add course</button></li>
-          <li><button class="menu-item" type="button">Add breaktime</button></li>
+          <li><button class="menu-item" id="btnAddSkill" type="button">Add skills</button></li>
+          <li><button class="menu-item" id="btnAddCourse" type="button">Add course</button></li>
+          <li><button class="menu-item" id="btnAddFreeTime" type="button">Add breaktime</button></li>
+
 
           <li class="menu-sep"></li>
-          <li><button class="menu-item danger" type="button">Logout</button></li>
+          <li>
+            <button class="menu-item danger" type="button"
+          onclick="window.location.href='../../Controller/logout.php'">Logout</button>
+</li>
+
         </menu>
       </details>
     </nav>
@@ -66,14 +84,27 @@ if ($_SESSION['role'] != 2) {
 
   <main class="layout">
     <section class="hero">
-      <h1>Welcome back 👋</h1>
-      <p>Match breaks, skills, or find course help — all in one place.</p>
+      <h1>Welcome back <?php echo htmlspecialchars($student['s_name']); ?></h1>
+      <p>Match breaks, skills, or find course help all in one place!</p>
 
       <form class="search" action="#" method="get">
         <input type="search" placeholder="Search by course (e.g., CSC 1102) or name..." />
         <button type="submit">Search</button>
       </form>
     </section>
+
+    <?php if (isset($_SESSION['search_results'])): ?>
+    <section class="search-results">
+      <h2>Search Results</h2>
+      <ul>
+        <?php while ($row = mysqli_fetch_assoc($_SESSION['search_results'])): ?>
+        <li>
+          <strong><?php echo htmlspecialchars($row['s_name']); ?></strong> (<?php echo htmlspecialchars($row['s_id']); ?>) - Courses: <?php echo htmlspecialchars($row['courses'] ?: 'None'); ?>
+        </li>
+        <?php endwhile; ?>
+      </ul>
+    </section>
+    <?php unset($_SESSION['search_results']); endif; ?>
 
     <section class="grid">
       <article class="card">
@@ -105,14 +136,37 @@ if ($_SESSION['role'] != 2) {
       <article class="panel">
         <header class="panel-head">
           <h2>Your Profile</h2>
-          <p>Public/private • active/inactive • tutor profile controls</p>
+          <p>Active/Inactive • tutor profile controls</p>
         </header>
 
         <ul class="list">
-          <li><span class="k">Name</span><span class="v">Student Name</span></li>
-          <li><span class="k">Help type</span><span class="v">Free / Treat / Paid</span></li>
-          <li><span class="k">Visibility</span><span class="v">Public / Private</span></li>
-          <li><span class="k">Status</span><span class="v">Active / Inactive</span></li>
+          <li><span class="k">Name</span><span class="v"><?php echo $student['s_name']; ?></span></li>
+          <li><span class="k">Status</span><span class="v"><?php echo $student['status'] == 1 ? 'Active' : 'Inactive'; ?></span></li>
+          <li>
+  <span class="k">Skills</span>
+  <span class="v">
+    <?php
+      $skills = [];
+      while($r = mysqli_fetch_assoc($skillsRes)){ $skills[] = $r['skill_name']; }
+      echo htmlspecialchars(count($skills) ? implode(", ", $skills) : "None");
+    ?>
+  </span>
+</li>
+
+<li>
+  <span class="k">Free time</span>
+  <span class="v">
+    
+  </span>
+</li>
+
+<li>
+  <span class="k">Courses</span>
+  <span class="v">
+    
+  </span>
+</li>
+
         </ul>
 
         <footer class="panel-foot">
