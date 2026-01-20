@@ -15,7 +15,8 @@ session_start();
             <span name="otpErr"><?php if(isset($_GET["otpErr"])){echo $_GET["otpErr"];}?></span><br>
             <input type="reset"  name="reset" value="clear"><br>
             <input type="submit" name="submit" value="submit"><br>
-            <input type="submit" name="resendOtp" value="Resend OTP">
+            <input type="submit" name="resendOtp" value="Resend OTP"><br>
+            <input type="submit" name="cancelSignup" value="Cancel Signup">
         </form>
     </body>
 </html>

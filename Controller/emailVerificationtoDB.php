@@ -15,6 +15,12 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
         $otpErr="OTP has been resent to your email.";
         header("Location:../View/student/emailVerificationView.php?otpErr=$otpErr");
     }
+    if(isset($_POST['cancelSignup'])){
+        session_unset();
+        session_destroy();
+        header("Location:../View/loginView.php");
+        exit();
+    }
     if(empty($otp)){
         $otpErr="OTP cannot be empty";
         $hasErr=true;

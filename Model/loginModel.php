@@ -8,7 +8,7 @@
 
         $data=mysqli_query($conn,$query);
     }
-    function updateDataLogin($userId,$password){
+    function updateLoginPassword($userId,$password){
         
         $query="UPDATE login SET login_password='$password' WHERE login_id='$userId' ";
         $conn=dbConnect();
