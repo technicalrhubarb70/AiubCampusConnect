@@ -31,7 +31,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
                 insertDataLogin($_SESSION['s_id'],$_SESSION['s_password'],2);
                 insertData($_SESSION['s_id'],$_SESSION['s_name'],$_SESSION['s_gender'],$_SESSION['s_email'],$_SESSION['s_password'],date('Y-m-d H:i:s'), $_SESSION['img_path']);
                 move_uploaded_file($_SESSION['img_name'], $_SESSION['img_path']);
-
+                sendMessage($_SESSION['s_email'],$_SESSION['s_id'],$_SESSION['real_password']);
                 session_unset();
                 session_destroy();
                 header("Location:../View/loginView.php");
