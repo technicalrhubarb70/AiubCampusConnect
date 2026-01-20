@@ -55,8 +55,8 @@
 
   <main class="layout">
     <section class="hero">
-      <h1>Welcome back 👋</h1>
-      <p>Match breaks, skills, or find course help — all in one place.</p>
+      <h1>Welcome back</h1>
+      <p>Match breaks, skills, or find course help all in one place!</p>
 
       <form class="search" action="#" method="get">
         <input type="search" placeholder="Search by course (e.g., CSC 1102) or name..." />
