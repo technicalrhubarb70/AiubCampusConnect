@@ -32,6 +32,7 @@ if ($_SESSION['role'] != 2) {
 </head>
 
 <body>
+  
   <header class="topbar">
     <a class="brand" href="#">
       <span class="brand-mark">AC</span>
@@ -112,7 +113,31 @@ if ($_SESSION['role'] != 2) {
           <h2>Break Match</h2>
           <p>Find someone free at the same time for adda.</p>
         </header>
-        <button class="card-btn" type="button">Suggest matches</button>
+        <span ><?php 
+          $studentIds=$_SESSION['matchedStudentIds'];
+          $tutorIds=$_SESSION['matchedTutorIds'];
+
+        echo "<h3>Matched Student IDs</h3>";
+        if(empty($studentIds)){
+            echo "No matched students.<br>";
+        }else{
+            foreach($studentIds as $id){
+                echo $id."<br>";
+            }
+        }
+
+        echo "<h3>Matched Tutor IDs</h3>";
+        if(empty($tutorIds)){
+            echo "No matched tutors.<br>";
+        }else{
+            foreach($tutorIds as $id){
+                echo $id."<br>";
+            }
+        }
+         ?></span>
+        <form method="GET" action="../../Controller/studentHomeBreakTimeController.php">
+        <input type="submit" class="card-btn" name="viewFreeTime" value="Suggest matches">
+        </form>
       </article>
 
       <article class="card">

@@ -95,9 +95,9 @@ if ($_SERVER["REQUEST_METHOD"]=="POST"){
 
         $otp= rand(100000, 999999);
         $_SESSION['otp']=$otp;
-        $emailSent= sendOtp($email,$otp);
+        //$emailSent= sendOtp($email,$otp);
 
-        header("Location:../View/student/emailVerificationView.php");
+        header("Location:../View/student/emailVerificationView.php?otp=$otp");
     }else{
         header("Location: ../View/student/signUpView.php?sNameErr=".$sNameErr."&sGenderErr=".$sGenderErr. "&sPasswordErr=".$sPasswordErr."&sEmailErr=".$sEmailErr."&sProPicErr=".$sProPicErr);
        
