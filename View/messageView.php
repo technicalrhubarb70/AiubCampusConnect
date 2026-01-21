@@ -133,7 +133,6 @@ $success = $_GET['success'] ?? "";
                 <label>Message</label>
                 <textarea name="message" placeholder="Write message..."></textarea>
                 <button type="submit" name="sendMessage">Send</button>
-                <label>Attach File (optional)</label>
                 <input type="file" name="attachment">
             </form>
 

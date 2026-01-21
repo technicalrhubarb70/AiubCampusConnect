@@ -118,55 +118,25 @@ $skillsRes = getSkillsByStudent($_SESSION['loginId']);
           <p>Find someone free at the same time for adda.</p>
         </header>
         <span ><?php
-$studentIds=$_SESSION['matchedStudentIds']??[];
-echo "<h3>Matched Student IDs</h3>";
-if(empty($studentIds)){
-    echo "No matched students.<br>";
-}else{
-    foreach ($studentIds as $id) {
-    ?>
-            <?php echo "ID: ".$id ; ?>
-            <form action="../../Controller/studentDashboardController.php" method="GET" style="display:inline;">
-               <input type="hidden" name="receiver_id" value="<?= htmlspecialchars($id) ?>">
-              <input type="submit"  value="Send Message to <?= htmlspecialchars($id) ?>">
-            </form>
-    <?php
-    }
-}
+              $studentIds=$_SESSION['matchedStudentIds']??[];
+              echo "<h3>Matched Student IDs</h3>";
+              if(empty($studentIds)){
+                  echo "No matched students.<br>";
+              }else{
+                  foreach ($studentIds as $id) {
+                  ?>
+                          <?php echo "ID: ".$id ; ?>
+                          <form action="../../Controller/studentDashboardController.php" method="GET" style="display:inline;">
+                            <input type="hidden" name="receiver_id" value="<?= htmlspecialchars($id) ?>">
+                            <input type="submit"  value="Send Message to <?= htmlspecialchars($id) ?>">
+                          </form>
+                  <?php
+                  }
+              }
 
-?>
-</span><br><br>
-        <form method="GET" action="../../Controller/studentHomeBreakTimeController.php">
-        <input type="submit" class="card-btn" name="viewFreeTime" value="Suggest matches">
-        </form>
-        <span ><?php 
-          $studentIds=$_SESSION['matchedStudentIds'];
-          $tutorIds=$_SESSION['matchedTutorIds'];
-
-        echo "<h3>Matched Student IDs</h3>";
-        if(empty($studentIds)){
-            echo "No matched students.<br>";
-        }else{
-            foreach($studentIds as $id){
-                echo $id."<br>";
-            }
-        }
-
-        echo "<h3>Matched Tutor IDs</h3>";
-        if(empty($tutorIds)){
-            echo "No matched tutors.<br>";
-        }else{
-            foreach($tutorIds as $id){
-                echo $id."<br>";
-            }
-        }
-         ?></span>
-        <form method="GET" action="../../Controller/studentHomeBreakTimeController.php">
-        <input type="submit" class="card-btn" name="viewFreeTime" value="Suggest matches">
-        </form>
-      </article>
-
-      </article>
+              ?>
+      </span><br><br>
+        </article>
 
       <article class="card">
   <header class="card-head">
