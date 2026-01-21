@@ -16,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST"){
     $email=$_POST['sEmail'];
     $file=$_FILES['sProPic'];
     $upload_dir = "../Resources/";
+    $upload_dir_real = __DIR__ . "/../Resources/";   // REAL filesystem path (Controller -> Resources)
     $path="";
 
 
@@ -72,13 +73,15 @@ if ($_SERVER["REQUEST_METHOD"]=="POST"){
 
         if(!$hasErr){
             $path = $upload_dir . basename($file["name"]);
+            $path_real = $upload_dir_real . basename($file["name"]);   // ✅ real path for move
             $_SESSION["img_name"]=$file["tmp_name"];
+        }
+
         }
 
     }
     else if ($file['error'] == UPLOAD_ERR_NO_FILE && !$hasErr){
         $path=$upload_dir."emptyImg.jpg";
-
         
     }
 
@@ -90,23 +93,21 @@ if ($_SERVER["REQUEST_METHOD"]=="POST"){
         $_SESSION['s_gender']=$gender;
         $_SESSION['real_password']=$pass;
         $_SESSION['s_password']= password_hash($pass, PASSWORD_DEFAULT);
-        $_SESSION['s_email']=$email;
-        $_SESSION['img_path']=$path;
+        $_SESSION['s_email']=$email;$_SESSION['img_path']=$path;
+
+        if($file['error'] != UPLOAD_ERR_NO_FILE){
+            move_uploaded_file($file["tmp_name"], $path_real);
+        }
 
         $otp= rand(100000, 999999);
         $_SESSION['otp']=$otp;
         //$emailSent= sendOtp($email,$otp);
 
-        header("Location:../View/student/emailVerificationView.php?otp=$otp");
+        header("Location:../View/student/emailVerificationView.php?otp=".$otp);
     }else{
         header("Location: ../View/student/signUpView.php?sNameErr=".$sNameErr."&sGenderErr=".$sGenderErr. "&sPasswordErr=".$sPasswordErr."&sEmailErr=".$sEmailErr."&sProPicErr=".$sProPicErr);
        
     }
-    
-
-
-
-}
 
 
 ?>

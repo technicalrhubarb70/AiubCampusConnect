@@ -36,57 +36,59 @@
 
         $data=mysqli_query($conn,$query);
     }
-
-    function getDataByIdPassword($id, $role)
-    {
-        $conn = dbConnect();
-    function updatePassword($id,$password){
-        
-        $query="UPDATE student SET s_password='$password' WHERE s_id='$id' ";
-        $conn=dbConnect();
-
-        $data=mysqli_query($conn,$query);
+    function getDataByIdPassword($id, $role){
+            $conn = dbConnect();
+            $id = mysqli_real_escape_string($conn, $id);
+            $role = (int)$role; 
+            $query = "SELECT * FROM student WHERE s_id = '$id' AND role = $role";
+            return mysqli_query($conn, $query);
     }
+        function updatePassword($id,$password){
+            
+            $query="UPDATE student SET s_password='$password' WHERE s_id='$id' ";
+            $conn=dbConnect();
+
+            $data=mysqli_query($conn,$query);
+        }
+        
+        function getDataById($id,$role){
+            
+            $query="SELECT * FROM student WHERE s_id=$id AND role=$role";
+            $conn=dbConnect();
+
+            $id = mysqli_real_escape_string($conn, $id);
+            $role = (int)$role;
+
+            $query = "SELECT * FROM student WHERE s_id = '$id' AND role = $role";
+            return mysqli_query($conn, $query);
+        }
+
+        function getAllData(){
+            
+            $query="SELECT * FROM student";
+            $conn=dbConnect();
+
+            $data=mysqli_query($conn,$query);
+            return $data;
+        }   
+
     
-    function getDataById($id,$role){
-        
-        $query="SELECT * FROM student WHERE s_id=$id AND role=$role";
-        $conn=dbConnect();
+        function getStudentById($id)
+        {
+            $conn = dbConnect();
+            $id = mysqli_real_escape_string($conn, $id);
 
-        $id = mysqli_real_escape_string($conn, $id);
-        $role = (int)$role;
+            $query = "SELECT * FROM student WHERE s_id = '$id'";
+            return mysqli_query($conn, $query);
+        }
+     function getStudentByEmail($email){ 
+            $query="SELECT * FROM student WHERE s_email='$email'";
+            $conn=dbConnect();
 
-        $query = "SELECT * FROM student WHERE s_id = '$id' AND role = $role";
-        return mysqli_query($conn, $query);
+            $data=mysqli_query($conn,$query);
+            $student=mysqli_fetch_assoc($data);
+            return $student;
     }
-
-    function getStudentByEmail($email){ 
-        $query="SELECT * FROM student WHERE s_email='$email'";
-        $conn=dbConnect();
-
-        $data=mysqli_query($conn,$query);
-        $student=mysqli_fetch_assoc($data);
-        return $student;
-    }
-
-    function getAllData(){
-        
-        $query="SELECT * FROM student";
-        $conn=dbConnect();
-
-        $data=mysqli_query($conn,$query);
-        return $data;
-    }   
-
-  
-    function getStudentById($id)
-    {
-        $conn = dbConnect();
-        $id = mysqli_real_escape_string($conn, $id);
-
-        $query = "SELECT * FROM student WHERE s_id = '$id'";
-        return mysqli_query($conn, $query);
-}
 
 
     function addSkill($s_id, $skill_name)
@@ -142,9 +144,5 @@
         return mysqli_query($conn, $query);
     }
 
-
-
-
-    
 
 ?>
