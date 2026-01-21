@@ -74,7 +74,7 @@ $success = $_GET['success'] ?? "";
     }
 
     .message_sender {
-    margin-left: auto;     /* pushes to right */
+    margin-left: auto;     
     text-align: right;
     }
 

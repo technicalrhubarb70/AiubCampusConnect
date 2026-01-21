@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once("../../Model/studentModel.php");
+require_once("../../Model/skillsModel.php");
 $studentIds=$_SESSION['matchedStudentIds'];
 $tutorIds=$_SESSION['matchedTutorIds'];
 $student = mysqli_fetch_assoc(getStudentById($_SESSION['loginId']));
@@ -32,6 +33,7 @@ $skillsRes = getSkillsByStudent($_SESSION['loginId']);
 </head>
 
 <body>
+  
   <header class="topbar">
     <a class="brand" href="#">
       <span class="brand-mark">AC</span>
@@ -65,13 +67,14 @@ $skillsRes = getSkillsByStudent($_SESSION['loginId']);
               <span class="slider"></span>
             </label>
           </li>
-
-          <li><button class="menu-item" id="btnAddSkill" type="button">Add skills</button></li>
-          <li><button class="menu-item" id="btnAddCourse" type="button">Add course</button></li>
           <li>
-            <form method="GET" action="../setFreeTimeView.php">
-              <input type="submit" class="menu-item" name="viewFreeTime" value="Add breaktime">
+            <form action="addSkillView.php" method="get">
+              <button type="submit" class="menu-item">Add skills</button>
             </form>
+          </li>
+          <form method="GET" action="../setFreeTimeView.php">
+            <input type="submit" class="menu-item" name="viewFreeTime" value="Add breaktime">
+          </form>
           </li>
           <li class="menu-sep"></li>
           <li>
@@ -136,24 +139,71 @@ if(empty($studentIds)){
         <form method="GET" action="../../Controller/studentHomeBreakTimeController.php">
         <input type="submit" class="card-btn" name="viewFreeTime" value="Suggest matches">
         </form>
+        <span ><?php 
+          $studentIds=$_SESSION['matchedStudentIds'];
+          $tutorIds=$_SESSION['matchedTutorIds'];
+
+        echo "<h3>Matched Student IDs</h3>";
+        if(empty($studentIds)){
+            echo "No matched students.<br>";
+        }else{
+            foreach($studentIds as $id){
+                echo $id."<br>";
+            }
+        }
+
+        echo "<h3>Matched Tutor IDs</h3>";
+        if(empty($tutorIds)){
+            echo "No matched tutors.<br>";
+        }else{
+            foreach($tutorIds as $id){
+                echo $id."<br>";
+            }
+        }
+         ?></span>
+        <form method="GET" action="../../Controller/studentHomeBreakTimeController.php">
+        <input type="submit" class="card-btn" name="viewFreeTime" value="Suggest matches">
+        </form>
+      </article>
 
       </article>
 
       <article class="card">
-        <header class="card-head">
-          <h2>Skill Match</h2>
-          <p>Connect with people with similar skillsets.</p>
-        </header>
-        <button class="card-btn" type="button">Suggest matches</button>
-      </article>
+  <header class="card-head">
+    <h2>Skill Match</h2>
+    <p>Connect with people with similar skillsets.</p>
+  </header>
 
-      <article class="card">
-        <header class="card-head">
-          <h2>Course Help</h2>
-          <p>Find tutors by course — Free / Treat / Paid.</p>
-        </header>
-        <button class="card-btn" type="button">Suggest tutors</button>
-      </article>
+  <?php
+  $msg = $_SESSION['skill_match_msg'] ?? "";
+  if ($msg != "") {
+      echo "<p>" . htmlspecialchars($msg) . "</p>";
+      unset($_SESSION['skill_match_msg']);
+  }
+
+  $skillmatches = $_SESSION['skill_matches'] ?? [];
+  if (!empty($skillmatches)) {
+      foreach ($skillmatches as $m) {
+          echo "<strong>" . htmlspecialchars($m['s_name']) . "</strong> (" . htmlspecialchars($m['s_id']) . ")<br>";
+          echo "<small>common: " . htmlspecialchars($m['common_skills']) . "</small><br><br>";
+      }
+  } else {
+      echo "<small>No skill matches yet.</small>";
+  }
+  ?>
+
+  
+
+  <!-- keep match button working -->
+   <form method="get" action="../../Controller/skillMatch.php">
+    <input type="submit" class="card-btn" value="Suggest matches">
+  </form>
+
+</article>
+
+
+
+      
     </section>
 
     <section class="content">
@@ -179,17 +229,24 @@ if(empty($studentIds)){
 
 <li>
   <span class="k">Free time</span>
-  <span class="v">
+  <?php
+  require_once("../../Model/setFreeTimeModel.php");
+  $freeTimes = getFreeTimeByStudentId($_SESSION['loginId']);
+
+if (empty($freeTimes)) {
+    echo "None";
+} else {
+    foreach ($freeTimes as $ft) {
+        echo htmlspecialchars($ft['day']) . ": " . htmlspecialchars($ft['free_times']) . "<br>";
+    }
+}
+?>
+
     
   </span>
 </li>
 
-<li>
-  <span class="k">Courses</span>
-  <span class="v">
-    
-  </span>
-</li>
+
 
         </ul>
 
