@@ -4,39 +4,78 @@ require_once("dbConnect.php");
 function insertMessage( $sender_id, $receiver_id, $message, $file)
 {
     $conn = dbConnect();
+    $sender_id = mysqli_real_escape_string($conn, $sender_id);
+    $receiver_id = mysqli_real_escape_string($conn, $receiver_id);
+    $message = mysqli_real_escape_string($conn, $message);
+    $file = mysqli_real_escape_string($conn, $file);
 
-    // Your table columns: m_id, sender_id, receiver_id, message, file, sent_at
-    $query = "INSERT INTO messages (m_id, sender_id, receiver_id, message, file, sent_at)
-              VALUES (?, ?, ?, ?, ?, NOW())";
+    $query = "INSERT INTO messages (sender_id, receiver_id, message, file, sent_at) VALUES ('$sender_id', '$receiver_id', '$message', '$file', NOW())";
 
-    $stmt = mysqli_prepare($conn, $query);
-    if (!$stmt) {
-        return false;
+    return mysqli_query($conn, $query);
+}
+
+
+function getMessages($login_id, $other_id){
+    $conn = dbConnect();
+    $login_id = mysqli_real_escape_string($conn, $login_id);
+    $other_id = mysqli_real_escape_string($conn, $other_id);
+
+    $query = "
+        SELECT *
+        FROM messages
+        WHERE (sender_id = '$login_id' AND receiver_id = '$other_id')
+           OR (sender_id = '$other_id' AND receiver_id = '$login_id')
+        ORDER BY sent_at ASC
+    ";
+
+    $data = mysqli_query($conn, $query);
+    if (!$data) {
+        die('Query failed: ' . mysqli_error($conn));
     }
 
-    mysqli_stmt_bind_param($stmt, "sssss", $m_id, $sender_id, $receiver_id, $message, $file);
-
-    $ok = mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
-
-    return $ok;
+    $messages = [];
+    while ($row = mysqli_fetch_assoc($data)) {
+        $messages[] = $row;
+    }
+    return $messages;
 }
 
-/* Validation: check user exists in login table */
-function userExists($id)
+
+function getPeers($sender_id)
 {
     $conn = dbConnect();
+    $sender_id = mysqli_real_escape_string($conn, $sender_id);
 
-    $sql = "SELECT login_id FROM login WHERE login_id = ? LIMIT 1";
-    $stmt = mysqli_prepare($conn, $sql);
-    if (!$stmt) return false;
+    $query = "
+        SELECT receiver_id
+        FROM messages
+        WHERE sender_id = '$sender_id'
+        GROUP BY receiver_id
+        ORDER BY MAX(sent_at) DESC
+    ";
 
-    mysqli_stmt_bind_param($stmt, "s", $id);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_store_result($stmt);
+    $data = mysqli_query($conn, $query);
+    if (!$data) {
+        die("Query failed: " . mysqli_error($conn));
+    }
 
-    $exists = mysqli_stmt_num_rows($stmt) > 0;
-
-    mysqli_stmt_close($stmt);
-    return $exists;
+    $peers = [];
+    while ($row = mysqli_fetch_assoc($data)) {
+        $peers[] = $row; // each row: ['receiver_id' => ...]
+    }
+    return $peers;
 }
+
+function userExists($userId)
+{
+    $conn = dbConnect();
+    $userId = mysqli_real_escape_string($conn, $userId);
+    $query = "SELECT COUNT(*) AS count FROM student WHERE s_id = '$userId'";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    return $row['count'] > 0;
+}
+
+
+
+?>

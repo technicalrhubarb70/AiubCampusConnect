@@ -2,18 +2,24 @@
 session_start();
 require_once("../Model/messageModel.php");
 
-$_SESSION['loginId'] = $_SESSION['loginId'] ?? null;
-$_SESSION['receiver_id'] = $_SESSION['receiver_id'] ?? null;
+if (!isset($_SESSION['loginId'])) {
+    header("Location:../View/loginView.php");
+    exit();
+}
 
-
+if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["peer_receiver_id"])) {
+    $_SESSION['receiver_id'] = $_GET["peer_receiver_id"];
+    header("Location:../View/messageView.php");
+    exit();
+}
 if ($_SERVER["REQUEST_METHOD"] !== "POST" || !isset($_POST["sendMessage"])) {
     header("Location:../View/messageView.php");
     exit();
 }
 
-$sender_id = $_SESSION["loginId"];
+$sender_id  = $_SESSION["loginId"];
 $receiver_id = trim($_POST["receiver_id"] ?? "");
-$message = trim($_POST["message"] ?? "");
+$message     = trim($_POST["message"] ?? "");
 
 $error = "";
 
@@ -27,7 +33,6 @@ if ($receiver_id === "") {
     $error = "Receiver not found";
 }
 
-// File upload
 $fileName = "";
 if ($error === "" && isset($_FILES["attachment"]) && $_FILES["attachment"]["error"] !== UPLOAD_ERR_NO_FILE) {
     $file = $_FILES["attachment"];
@@ -38,7 +43,7 @@ if ($error === "" && isset($_FILES["attachment"]) && $_FILES["attachment"]["erro
         if (!in_array($file["type"], $allowedTypes)) {
             $error = "Invalid file type. Only JPG, PNG, and PDF allowed.";
         } else {
-            $uploadDir = "../uploads/";
+            $uploadDir = "../Resourses/";
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
@@ -60,10 +65,6 @@ if ($message === "" && $fileName === "") {
     header("Location:../View/messageView.php?err=" . urlencode("Message or file required"));
     exit();
 }
-
-// Insert message
-$m_id = "m_" . bin2hex(random_bytes(10));
-
 $ok = insertMessage($sender_id, $receiver_id, $message, $fileName);
 
 if (!$ok) {
@@ -73,3 +74,6 @@ if (!$ok) {
 
 header("Location:../View/messageView.php?success=" . urlencode("Message sent successfully"));
 exit();
+
+
+?>

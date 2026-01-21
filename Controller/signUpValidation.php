@@ -94,10 +94,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST"){
         $_SESSION['real_password']=$pass;
         $_SESSION['s_password']= password_hash($pass, PASSWORD_DEFAULT);
         $_SESSION['s_email']=$email;$_SESSION['img_path']=$path;
-
-        if($file['error'] != UPLOAD_ERR_NO_FILE){
-            move_uploaded_file($file["tmp_name"], $path_real);
-        }
+        move_uploaded_file($file["tmp_name"], $path_real);
 
         $otp= rand(100000, 999999);
         $_SESSION['otp']=$otp;

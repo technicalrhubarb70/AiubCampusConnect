@@ -1,117 +1,184 @@
+<?php
+session_start();
+require_once("../Model/messageModel.php");
+
+if (!isset($_SESSION['loginId'])) {
+    header("Location: loginView.php");
+    exit();
+}
+
+$sender_id   = $_SESSION['loginId'];
+$receiver_id = $_SESSION['receiver_id'] ?? "";
+$peers = getPeers($sender_id);
+
+$messages = [];
+if (!empty($receiver_id)) {
+    $messages = getMessages($sender_id,$receiver_id);
+}
+
+
+
+$err = $_GET['err'] ?? "";
+$success = $_GET['success'] ?? "";
+?>
+
+
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chat Layout</title>
+  <title>Chat</title>
   <style>
-    /* layout only — no colors, no rounding */
     html, body { height: 100%; margin: 0; }
     body { font-family: Arial, sans-serif; }
-
     main { height: 100%; display: flex; }
-
-    /* Left: 1/4 */
     aside {
       width: 25%;
       border-right: 1px solid #000;
       display: flex;
       flex-direction: column;
+      padding: 8px;
+      box-sizing: border-box;
     }
-
-    /* Right: 3/4 */
     section.chat {
       width: 75%;
       display: flex;
       flex-direction: column;
     }
-
-    header, footer { padding: 8px; border-bottom: 1px solid #000; }
-    aside header { border-bottom: 1px solid #000; }
-    section.chat header { border-bottom: 1px solid #000; }
-
-    /* users list area */
+    .left-top { border-bottom: 1px solid #000; padding-bottom: 8px; }
+    .left-top > * { display: block; margin-bottom: 8px; }
     nav.users {
       flex: 1;
       overflow: auto;
-      padding: 8px;
+      padding-top: 8px;
     }
-    nav.users ul { margin: 0; padding-left: 18px; }
-    nav.users li { margin: 6px 0; }
-
-    /* messages area */
+    header.chat-head {
+      padding: 8px;
+      border-bottom: 1px solid #000;
+    }
     article.messages {
       flex: 1;
       overflow: auto;
       padding: 8px;
       border-bottom: 1px solid #000;
+      box-sizing: border-box;
+    }
+    .chat-foot {
+         padding: 30px;
+     }
+
+
+    .message_receiver {
+    text-align: left;
     }
 
-    /* input area */
-    form.composer {
-      padding: 8px;
-      display: flex;
-      gap: 8px;
-      align-items: center;
+    .message_sender {
+    margin-left: auto;     
+    text-align: right;
     }
-    form.composer input[type="text"] { flex: 1; }
+
+    
   </style>
 </head>
 
 <body>
   <main>
-    <!-- LEFT (1/4) -->
+
+    <!-- LEFT -->
     <aside>
-      <header>
+      <div class="left-top">
         <button type="button">My Profile</button>
-        <form action="#" method="get">
-          <label>
+
+        <form onsubmit="return false;">
+        <label>
             Search user
-            <input type="search" name="q" />
-          </label>
-          <button type="submit">Search</button>
+            <input type="search" id="searchuser" placeholder="enter user" onkeyup="liveSearchUsers()">
+        </label>
         </form>
-      </header>
+        <div id="searchResults"></div>
+
+
+      </div>
 
       <nav class="users" aria-label="Connected users">
-        <h2>Users</h2>
-        <ul>
-          <li><a href="#">User 1</a></li>
-          <li><a href="#">User 2</a></li>
-          <li><a href="#">User 3</a></li>
-          <!-- add more connected users -->
-        </ul>
-      </nav>
+        <?php foreach ($peers as $peer){ ?>
+          <form action="../Controller/messageController.php" method="GET">
+        <input type="hidden" name="peer_receiver_id" value="<?= htmlspecialchars($peer['receiver_id']) ?>">
+        <button type="submit"><?= htmlspecialchars($peer['receiver_id']) ?></button>
+        </form>
+   
+        <?php
+        }
+        ?>
+        
+     </nav>
     </aside>
 
-    <!-- RIGHT (3/4) -->
+    <!-- RIGHT -->
     <section class="chat" aria-label="Chat panel">
-      <header>
-        <h1>Receiver Name</h1>
+      <header class="chat-head">
+        <h1><?= $receiver_id ? "Chat with: " . htmlspecialchars($receiver_id) : "Select a user" ?></h1>
       </header>
 
-      <article class="messages" aria-label="Messages">
-        <p><strong>Receiver:</strong> Hello</p>
-        <p><strong>Me:</strong> Hi</p>
-        <!-- messages go here -->
+      <article class="messages" id="messagesContainer" aria-label="Messages">
+        
       </article>
 
-      <footer>
-        <form class="composer" action="#" method="post" enctype="multipart/form-data">
-          <label>
-            Message
-            <input type="text" name="message" autocomplete="off" />
-          </label>
+      <footer class="chat-foot">
 
-          <label>
-            File
-            <input type="file" name="attachment" />
-          </label>
+            <form action="../Controller/messageController.php" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="sender_id" value="<?php echo htmlspecialchars($_SESSION['loginId']); ?>">
+                <input type="hidden" name="receiver_id" value="<?php echo htmlspecialchars($receiver_id); ?>">
+                <label>Message</label>
+                <textarea name="message" placeholder="Write message..."></textarea>
+                <button type="submit" name="sendMessage">Send</button>
+                <label>Attach File (optional)</label>
+                <input type="file" name="attachment">
+            </form>
 
-          <button type="submit">Send</button>
-        </form>
       </footer>
     </section>
   </main>
+  <script>
+function loadMessages(){
+    let xhr=new XMLHttpRequest();
+    let container=document.getElementById("messagesContainer");
+    xhr.open("GET","../Controller/ajaxMessage.php",true);
+    xhr.onreadystatechange=function(){
+        if(xhr.readyState===4&&xhr.status===200){
+            container.innerHTML=xhr.responseText;
+            container.scrollTop=container.scrollHeight;
+        }
+    };
+    xhr.send();
+}
+loadMessages();
+setInterval(loadMessages,3000);
+</script>
+<script>
+function liveSearchUsers(){
+    let q=document.getElementById("searchuser").value;
+    let box=document.getElementById("searchResults");
+
+    if(q.length===0){
+        box.innerHTML="";
+        return;
+    }
+
+    let xhr=new XMLHttpRequest();
+    xhr.open("GET","../Controller/ajaxSearchUser.php?q="+encodeURIComponent(q),true);
+
+    xhr.onreadystatechange=function(){
+        if(xhr.readyState===4&&xhr.status===200){
+            box.innerHTML=xhr.responseText;
+        }
+    };
+
+    xhr.send();
+}
+</script>
+
+
 </body>
 </html>

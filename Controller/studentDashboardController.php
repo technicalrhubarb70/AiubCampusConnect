@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once("../Model/studentModel.php");
+require_once("../Model/messageModel.php");
+
 header("Content-Type: application/json");
 
 if ($_SERVER["REQUEST_METHOD"] === 'GET' && isset($_GET['receiver_id'])) {

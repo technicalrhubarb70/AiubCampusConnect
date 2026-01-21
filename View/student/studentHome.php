@@ -22,8 +22,6 @@ if (!$student) {
 $skillsRes = getSkillsByStudent($_SESSION['loginId']);
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

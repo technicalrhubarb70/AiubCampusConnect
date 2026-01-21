@@ -1,54 +1,47 @@
 <?php
-    require_once("dbConnect.php");
-    function insertData($id, $name, $gender, $email, $password,$created_at, $s_propic){
-        
-        $query="INSERT INTO student (s_id,s_name,s_gender,s_email,s_password,role,status,created_at,s_propic) VALUES ('$id','$name','$gender','$email','$password',2,1,'$created_at','$s_propic')";
-        $conn=dbConnect();
+require_once("dbConnect.php");
+
+function insertAdminData($id,$name,$email,$password,$role){
+    $query="INSERT INTO admin (a_id,a_name,a_email,a_password,role,status) VALUES ('$id','$name','$email','$password',$role,1)";
+    $conn=dbConnect();
 
         $data=mysqli_query($conn,$query);
 
         if($data)
         {
-            echo "<script>alert('Registration successful.');</script>";
-            
+            echo "data inserted";
+            var_dump($data);   
         }
-
         else
         {
-            echo "<script>alert('Registration failed.');</script>";
+            echo mysqli_error($conn);
+            var_dump($data);
         }
+}
+
+function updateAdminData($id,$name,$email,$password,$role,$status){
+   
+    $query="UPDATE admin SET a_name='$name',a_email='$email',a_password='$password',role=$role,status=$status WHERE a_id='$id'";
+     $conn=dbConnect();
+
+    $data=mysqli_query($conn,$query);
+}
+
+function deleteAdminById($id){
+    $conn=dbConnect();
+    $id=mysqli_real_escape_string($conn,$id);
+    $query="DELETE FROM admin WHERE a_id='$id'";
+    $data=mysqli_query($conn,$query);
+}
+
+function getAdminById($id){
+    $conn=dbConnect();
+    $query="SELECT * FROM admin WHERE a_id='$id' LIMIT 1";
+    $data=mysqli_query($conn,$query);
+    if(!$data){
+        return null;
     }
-
-    function updateData($id, $name, $gender, $email, $password,$s_propic){
-        
-        $query="UPDATE student SET s_name=$name,s_gender=$gender,s_email=$email,s_password=$password,s_propic=$s_propic WHERE s_id=$id";
-        $conn=dbConnect();
-        $data=mysqli_query($conn,$query);
-    }
-    function deleteData($id){
-        
-        $query="DELETE FROM student WHERE s_id=$id";
-        $conn=dbConnect();
-
-        $data=mysqli_query($conn,$query);
-    }
-
-    function getDataByIdPassword($id,$role){
-        
-        $query="SELECT * FROM student WHERE s_id=$id AND role=$role";
-        $conn=dbConnect();
-
-        $data=mysqli_query($conn,$query);
-        return $data;
-    }
-    function getAllData(){
-        
-        $query="SELECT * FROM student";
-        $conn=dbConnect();
-
-        $data=mysqli_query($conn,$query);
-        return $data;
-    }   
-    
-
+    $row=mysqli_fetch_assoc($data);
+    return $row?$row:null;
+}
 ?>
