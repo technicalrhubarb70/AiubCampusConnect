@@ -1,7 +1,16 @@
 <?php
 session_start();
 require_once("../../Model/studentModel.php");
-$student = mysqli_fetch_assoc(getStudentById($_SESSION['userId']));
+$studentIds=$_SESSION['matchedStudentIds'];
+$tutorIds=$_SESSION['matchedTutorIds'];
+$student = mysqli_fetch_assoc(getStudentById($_SESSION['loginId']));
+
+if ($_SESSION['role'] != 2) {
+    header("Location:../loginView.php");
+    exit();
+}
+
+
 
 if (!$student) {
   $student = [
@@ -9,17 +18,8 @@ if (!$student) {
     'status' => 0
   ];
 }
-$skillsRes = getSkillsByStudent($_SESSION['userId']);
-
+$skillsRes = getSkillsByStudent($_SESSION['loginId']);
 ?>
-
-if ($_SESSION['role'] != 2) {
-    header("Location:../loginView.php");
-    exit();
-}
-?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +49,7 @@ if ($_SESSION['role'] != 2) {
           <span class="avatar" aria-hidden="true"></span>
           <span class="profile-meta">
             <strong class="profile-name"><?php echo htmlspecialchars($student['s_name']); ?></strong>
-            <small class="profile-role">ID: <?php echo htmlspecialchars($_SESSION['userId']); ?></small>
+            <small class="profile-role">ID: <?php echo htmlspecialchars($_SESSION['loginId']); ?></small>
 
           </span>
           <span class="chev" aria-hidden="true"></span>
@@ -68,9 +68,11 @@ if ($_SESSION['role'] != 2) {
 
           <li><button class="menu-item" id="btnAddSkill" type="button">Add skills</button></li>
           <li><button class="menu-item" id="btnAddCourse" type="button">Add course</button></li>
-          <li><button class="menu-item" id="btnAddFreeTime" type="button">Add breaktime</button></li>
-
-
+          <li>
+            <form method="GET" action="../setFreeTimeView.php">
+              <input type="submit" class="menu-item" name="viewFreeTime" value="Add breaktime">
+            </form>
+          </li>
           <li class="menu-sep"></li>
           <li>
             <button class="menu-item danger" type="button"
@@ -112,7 +114,29 @@ if ($_SESSION['role'] != 2) {
           <h2>Break Match</h2>
           <p>Find someone free at the same time for adda.</p>
         </header>
-        <button class="card-btn" type="button">Suggest matches</button>
+        <span ><?php
+$studentIds=$_SESSION['matchedStudentIds']??[];
+echo "<h3>Matched Student IDs</h3>";
+if(empty($studentIds)){
+    echo "No matched students.<br>";
+}else{
+    foreach ($studentIds as $id) {
+    ?>
+            <?php echo "ID: ".$id ; ?>
+            <form action="../../Controller/studentDashboardController.php" method="GET" style="display:inline;">
+               <input type="hidden" name="receiver_id" value="<?= htmlspecialchars($id) ?>">
+              <input type="submit"  value="Send Message to <?= htmlspecialchars($id) ?>">
+            </form>
+    <?php
+    }
+}
+
+?>
+</span><br><br>
+        <form method="GET" action="../../Controller/studentHomeBreakTimeController.php">
+        <input type="submit" class="card-btn" name="viewFreeTime" value="Suggest matches">
+        </form>
+
       </article>
 
       <article class="card">
@@ -188,7 +212,9 @@ if ($_SESSION['role'] != 2) {
         </ul>
 
         <footer class="panel-foot">
-          <button class="ghost" type="button">Open chats</button>
+          <form action="../messageView.php" method="GET">
+            <input type="submit" class="ghost" value="Send a message">
+          </form>
         </footer>
       </aside>
     </section>

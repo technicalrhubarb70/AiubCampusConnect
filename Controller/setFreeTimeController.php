@@ -4,9 +4,9 @@ $s_id="";
 $t_id="";
 if($_SESSION['role']==2){   
     $s_id=$_SESSION['loginId']??"";
-}else if($_SESSION['role']==3){
+}/*else if($_SESSION['role']==3){
     $t_id=$_SESSION['loginId']??"";
-}
+}*/
 if($t_id===""){
         $t_id=null;
     }

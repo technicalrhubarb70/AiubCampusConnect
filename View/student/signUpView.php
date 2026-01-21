@@ -15,7 +15,7 @@
 
         <!-- Logo -->
         <div class="logo-wrapper">
-            <img src="../../Model/Resources/signup.png" class="signup-image" alt="Signup Image">
+            <img src="../../Resourses/logo.png" class="signup-image" alt="Signup Image">
             
         </div>
 
