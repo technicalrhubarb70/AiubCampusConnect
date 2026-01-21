@@ -70,8 +70,8 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
                 {
                     $_SESSION['loginId']=$user['login_id'];
                     $_SESSION['role']=$user['role'];
-                    //header("Location: ../View/setFreeTimeView.php");
-                    header("Location:../View/student/studentHome.php");
+                    header("Location: ../View/setFreeTimeView.php");
+                    //header("Location:../View/student/studentHome.php");
                     exit();
                 }
             }
