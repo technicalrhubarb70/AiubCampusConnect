@@ -15,6 +15,7 @@ if (!isset($_SESSION['loginId']) || !isset($_SESSION['role']) || $_SESSION['role
     exit();
 }
 
+
 $action = $_POST["action"] ?? "";
 $s_id = $_SESSION["loginId"];
 
