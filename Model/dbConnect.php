@@ -10,6 +10,8 @@ function dbConnect(){
     global $db_pass;
     global $db_Name;
     global $port;
+    mysqli_report(MYSQLI_REPORT_OFF);
+
     $conn=mysqli_connect($host, $user, $db_pass, $db_Name, $port);
 
     if($conn){

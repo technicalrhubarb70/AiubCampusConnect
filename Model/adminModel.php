@@ -1,47 +1,151 @@
 <?php
 require_once("dbConnect.php");
 
-function insertAdminData($id,$name,$email,$password,$role){
-    $query="INSERT INTO admin (a_id,a_name,a_email,a_password,role,status) VALUES ('$id','$name','$email','$password',$role,1)";
-    $conn=dbConnect();
 
-        $data=mysqli_query($conn,$query);
-
-        if($data)
-        {
-            echo "data inserted";
-            var_dump($data);   
-        }
-        else
-        {
-            echo mysqli_error($conn);
-            var_dump($data);
-        }
+function searchUser($key)
+{
+    $conn = dbConnect();
+    return mysqli_query(
+        $conn,
+        "SELECT s_id, s_name, s_email, role, status
+         FROM student
+         WHERE s_id LIKE '%$key%'
+            OR s_name LIKE '%$key%'
+            OR s_email LIKE '%$key%'"
+    );
 }
 
-function updateAdminData($id,$name,$email,$password,$role,$status){
-   
-    $query="UPDATE admin SET a_name='$name',a_email='$email',a_password='$password',role=$role,status=$status WHERE a_id='$id'";
-     $conn=dbConnect();
-
-    $data=mysqli_query($conn,$query);
+function getAllUsers()
+{
+    $conn = dbConnect();
+    return mysqli_query($conn, "SELECT * FROM student");
 }
 
-function deleteAdminById($id){
-    $conn=dbConnect();
-    $id=mysqli_real_escape_string($conn,$id);
-    $query="DELETE FROM admin WHERE a_id='$id'";
-    $data=mysqli_query($conn,$query);
-}
 
-function getAdminById($id){
-    $conn=dbConnect();
-    $query="SELECT * FROM admin WHERE a_id='$id' LIMIT 1";
-    $data=mysqli_query($conn,$query);
-    if(!$data){
-        return null;
+/* ===== ADDED FUNCTIONS (DO NOT TOUCH OTHERS) ===== */
+
+function getUserById($id)
+{
+    $conn = dbConnect();
+    $res = mysqli_query(
+        $conn,
+        "SELECT s_id, s_name, s_gender, s_email, role, status
+         FROM student
+         WHERE s_id='$id'"
+    );
+
+    if($res && mysqli_num_rows($res) == 1){
+        return mysqli_fetch_assoc($res);
     }
-    $row=mysqli_fetch_assoc($data);
-    return $row?$row:null;
+    return null;
+}
+
+function updateUser($id, $name, $gender, $email, $password, $role, $status)
+{
+    $conn = dbConnect();
+
+    if($password != ""){
+        mysqli_query($conn,
+            "UPDATE student
+             SET s_name='$name',
+                 s_gender='$gender',
+                 s_email='$email',
+                 s_password='$password',
+                 role=$role,
+                 status=$status
+             WHERE s_id='$id'"
+        );
+
+        mysqli_query($conn,
+            "UPDATE login
+             SET login_password='$password',
+                 role=$role,
+                 status=$status
+             WHERE login_id='$id'"
+        );
+    }
+    else{
+        mysqli_query($conn,
+            "UPDATE student
+             SET s_name='$name',
+                 s_gender='$gender',
+                 s_email='$email',
+                 role=$role,
+                 status=$status
+             WHERE s_id='$id'"
+        );
+
+        mysqli_query($conn,
+            "UPDATE login
+             SET role=$role,
+                 status=$status
+             WHERE login_id='$id'"
+        );
+    }
+
+    return !mysqli_error($conn);
+}
+
+
+function deleteUser($id)
+{
+    $conn = dbConnect();
+
+    mysqli_query($conn, "DELETE FROM student WHERE s_id='$id'");
+    if(mysqli_error($conn)) return false;
+
+    mysqli_query($conn, "DELETE FROM login WHERE login_id='$id'");
+    if(mysqli_error($conn)) return false;
+
+    return true;
+}
+
+
+/* ===== EXISTING CODE CONTINUES ===== */
+
+function addUser($id, $name, $gender, $email, $password, $role, $status)
+{
+    $conn = dbConnect();
+
+    /* ---------- INSERT INTO LOGIN (PARENT) ---------- */
+    mysqli_query(
+        $conn,
+        "INSERT INTO login (login_id, login_password, role, status)
+         VALUES ('$id', '$password', $role, $status)"
+    );
+
+    if(mysqli_errno($conn) == 1062){
+        return "DUPLICATE_ID";
+    }
+
+    if(mysqli_error($conn)){
+        return false;
+    }
+
+    /* ---------- INSERT INTO STUDENT (CHILD) ---------- */
+    mysqli_query(
+        $conn,
+        "INSERT INTO student
+         (s_id, s_name, s_gender, s_email, s_password, role, status)
+         VALUES
+         ('$id', '$name', '$gender', '$email', '$password', $role, $status)"
+    );
+
+    if(mysqli_errno($conn) == 1062){
+        return "DUPLICATE_EMAIL";
+    }
+
+    if(mysqli_error($conn)){
+        return false;
+    }
+
+    return true;
+}
+
+function updateUserStatus($id, $newStatus)
+{
+    $conn = dbConnect();
+    mysqli_query($conn, "UPDATE student SET status=$newStatus WHERE s_id='$id'");
+    return !mysqli_error($conn);
 }
 ?>
