@@ -11,16 +11,14 @@ function sendOtp($email,$otp){
 
     $mail = new PHPMailer();
 
-    // SMTP SETTINGS
     $mail->isSMTP();
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'rafitrahad28@gmail.com';     // your email
-    $mail->Password   = 'atlk opmy gpdn tqip';   // Gmail App Password
+    $mail->Username   = 'rafitrahad28@gmail.com';  
+    $mail->Password   = 'atlk opmy gpdn tqip'; 
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = 587;
 
-    // EMAIL CONTENT
     $mail->setFrom('rafitrahad28@gmail.com', 'AIUB Campus Connect');
     $mail->addAddress($email);
     $mail->Subject = 'Your OTP Code';
@@ -35,16 +33,14 @@ function sendMessage($email,$id,$password){
 
     $mail = new PHPMailer();
 
-    // SMTP SETTINGS
     $mail->isSMTP();
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'rafitrahad28@gmail.com';     // your email
-    $mail->Password   = 'atlk opmy gpdn tqip';   // Gmail App Password
+    $mail->Username   = 'rafitrahad28@gmail.com'; 
+    $mail->Password   = 'atlk opmy gpdn tqip'; 
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port       = 587;
 
-    // EMAIL CONTENT
     $mail->setFrom('rafitrahad28@gmail.com', 'AIUB Campus Connect');
     $mail->addAddress($email);
     $mail->Subject = 'Your Account Details';

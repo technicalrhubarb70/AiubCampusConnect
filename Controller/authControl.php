@@ -50,7 +50,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
     }
     else
     {
-        $user=searchUserById($userId);
+        $user=searchLoginUserById($userId);
 
         if(!$user||!password_verify($pass,$user['login_password']))
         {

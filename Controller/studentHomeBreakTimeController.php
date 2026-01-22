@@ -17,7 +17,6 @@ if($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET['viewFreeTime'])){
             $individualTimes[$day]=[];
         }
 
-        // merge instead of overwrite
         $individualTimes[$day]=array_merge($individualTimes[$day],$timesArray);
         $individualTimes[$day]=array_values(array_unique($individualTimes[$day]));
     }

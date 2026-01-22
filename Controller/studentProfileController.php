@@ -6,6 +6,7 @@ require_once("../Model/setFreeTimeModel.php");
 require_once("../Model/messageModel.php");
 require_once("../Model/studentModel.php");
 require_once("../Model/loginModel.php");
+require_once("../Model/studentCourseModel.php");
 
 if ($_SESSION['role'] != 2) {
     header("Location:../loginView.php");

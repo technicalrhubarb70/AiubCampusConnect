@@ -21,9 +21,6 @@ function getAllUsers()
     return mysqli_query($conn, "SELECT * FROM student");
 }
 
-
-/* ===== ADDED FUNCTIONS (DO NOT TOUCH OTHERS) ===== */
-
 function getUserById($id)
 {
     $conn = dbConnect();
@@ -101,13 +98,10 @@ function deleteUser($id)
 }
 
 
-/* ===== EXISTING CODE CONTINUES ===== */
-
 function addUser($id, $name, $gender, $email, $password, $role, $status)
 {
     $conn = dbConnect();
 
-    /* ---------- INSERT INTO LOGIN (PARENT) ---------- */
     mysqli_query(
         $conn,
         "INSERT INTO login (login_id, login_password, role, status)
@@ -122,7 +116,6 @@ function addUser($id, $name, $gender, $email, $password, $role, $status)
         return false;
     }
 
-    /* ---------- INSERT INTO STUDENT (CHILD) ---------- */
     mysqli_query(
         $conn,
         "INSERT INTO student

@@ -10,8 +10,6 @@ if(isset($_POST['updateUser']))
     $role   = $_POST['role'];
     $status = $_POST['status'];
 
-    // if password field exists in your form:
-    // if empty => keep old password from DB
     $newPass = $_POST['s_password'];
 
     $old = getUserById($id);
@@ -24,8 +22,6 @@ if(isset($_POST['updateUser']))
     if($finalPass == ""){
         $finalPass = $old['s_password'];
     }
-
-    // if you are not changing propic now, keep old
     $propic = $old['s_propic'];
 
     $ok = updateUser($id, $name, $gender, $email, $finalPass, $role, $status, $propic);

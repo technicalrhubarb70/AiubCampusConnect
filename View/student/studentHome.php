@@ -152,22 +152,34 @@ $skillsRes = getSkillsByStudent($_SESSION['loginId']);
   </header>
 
   <?php
-  $msg = $_SESSION['skill_match_msg'] ?? "";
-  if ($msg != "") {
-      echo "<p>" . htmlspecialchars($msg) . "</p>";
-      unset($_SESSION['skill_match_msg']);
-  }
+$msg = $_SESSION['skill_match_msg'] ?? "";
+if ($msg !== "") {
+    echo "<p>" . htmlspecialchars($msg) . "</p>";
+    unset($_SESSION['skill_match_msg']);
+}
 
-  $skillmatches = $_SESSION['skill_matches'] ?? [];
-  if (!empty($skillmatches)) {
-      foreach ($skillmatches as $m) {
-          echo "<strong>" . htmlspecialchars($m['s_name']) . "</strong> (" . htmlspecialchars($m['s_id']) . ")<br>";
-          echo "<small>common: " . htmlspecialchars($m['common_skills']) . "</small><br><br>";
-      }
-  } else {
-      echo "<small>No skill matches yet.</small>";
-  }
-  ?>
+$skillmatches = $_SESSION['skill_matches'] ?? [];
+
+if (!empty($skillmatches)) {
+    foreach ($skillmatches as $m) {
+        $sid = $m['s_id'] ?? '';
+        $common = $m['common_skills'] ?? '';
+
+        echo "<strong>" . htmlspecialchars($m['s_name'] ?? 'Unknown') . "</strong> (" . htmlspecialchars($sid) . ")<br>";
+
+        ?>
+        <form action="../../Controller/messageController.php" method="GET" style="display:inline;">
+            <input type="hidden" name="peer_receiver_id" value="<?= htmlspecialchars($sid) ?>">
+            <button type="submit">Send Message</button>
+        </form>
+        <?php
+
+        echo " <small>common: " . htmlspecialchars($common) . "</small><br><br>";
+    }
+} else {
+    echo "<small>No skill matches yet.</small>";
+}
+?>
 
   
 

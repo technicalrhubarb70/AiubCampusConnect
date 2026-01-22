@@ -5,7 +5,7 @@ if (!isset($_SESSION['loginId']) || !isset($_SESSION['role']) || $_SESSION['role
     die("unauthorized");
 }
 
-require_once(__DIR__ . "/../Model/skillsModel.php"); // or ../model/skillsmodel.php depending on your folder name
+require_once(__DIR__ . "/../Model/skillsModel.php");
 
 $s_id = $_SESSION['loginId'];
 
