@@ -3,7 +3,6 @@ session_start();
 require_once("../../Model/studentModel.php");
 require_once("../../Model/skillsModel.php");
 $studentIds=$_SESSION['matchedStudentIds'];
-$tutorIds=$_SESSION['matchedTutorIds'];
 $student = mysqli_fetch_assoc(getStudentById($_SESSION['loginId']));
 
 if ($_SESSION['role'] != 2) {
@@ -11,7 +10,10 @@ if ($_SESSION['role'] != 2) {
     exit();
 }
 
-
+if(!isset($_SESSION['loginId'])||!isset($_SESSION['role'])){
+    header("Location:../loginView.php");
+    exit();
+}
 
 if (!$student) {
   $student = [
@@ -58,15 +60,11 @@ $skillsRes = getSkillsByStudent($_SESSION['loginId']);
         </summary>
 
         <menu class="dropdown" aria-label="Profile menu">
-          <li><button class="menu-item" type="button">Edit picture</button></li>
-
-          <li class="menu-row">
-            <span class="menu-label">Teacher status</span>
-            <label class="switch">
-              <input type="checkbox" id="teacherToggle" />
-              <span class="slider"></span>
-            </label>
-          </li>
+          
+          <li>
+            <form action="studentProfileView.php" method="GET">
+            <input type="submit" class="menu-item" name='edit_Profile ' value="Edit Profile "></li>
+           </form>
           <li>
             <form action="addSkillView.php" method="get">
               <button type="submit" class="menu-item">Add skills</button>
@@ -78,9 +76,15 @@ $skillsRes = getSkillsByStudent($_SESSION['loginId']);
           </li>
           <li class="menu-sep"></li>
           <li>
+            <li>
+              <form action="studentCourseView.php" method="GET">
+             <input type="submit" class="menu-item" value="Add Courses">
+            </form>
+            </li>
+
             <button class="menu-item danger" type="button"
           onclick="window.location.href='../../Controller/logout.php'">Logout</button>
-</li>
+          </li>
 
         </menu>
       </details>
@@ -136,6 +140,9 @@ $skillsRes = getSkillsByStudent($_SESSION['loginId']);
 
               ?>
       </span><br><br>
+      <form method="GET" action="../../Controller/studentHomeBreakTimeController.php">
+        <input type="submit" class="card-btn" name="viewFreeTime" value="Suggest matches">
+        </form>
         </article>
 
       <article class="card">
@@ -171,6 +178,37 @@ $skillsRes = getSkillsByStudent($_SESSION['loginId']);
 
 </article>
 
+<article class="card">
+  <header class="card-head">
+    <h2>Course Match</h2>
+    <p>Find students taking the same course.</p>
+  </header>
+
+  <?php
+  $courseMatches=$_SESSION['course_matches']??[];
+
+  if(empty($courseMatches)){
+      echo "<small>No course matches yet.</small>";
+  }else{
+      foreach($courseMatches as $m){
+          ?>
+          <strong>Course: <?= htmlspecialchars($m['course']) ?></strong><br>
+          Student ID: <?= htmlspecialchars($m['s_id']) ?>
+
+          <form action="../../Controller/messageController.php" method="GET" style="display:inline;">
+          <input type="hidden" name="peer_receiver_id" value="<?= htmlspecialchars($m['s_id']) ?>">
+          <button type="submit">Send Message</button>
+          </form>
+
+          <br><br>
+          <?php
+      }
+  }
+  ?>
+<form method="GET" action="../../Controller/studentHomeCourseController.php">
+    <input type="submit" class="card-btn" value="Suggest matches">
+</form>
+</article>
 
 
       
@@ -221,7 +259,9 @@ if (empty($freeTimes)) {
         </ul>
 
         <footer class="panel-foot">
-          <button class="ghost" type="button">Open profile editor</button>
+          <form action="studentProfileView.php" method="GET">
+            <input type="submit" class="ghost" value="Open profile editor">
+          </form>
         </footer>
       </article>
 
@@ -234,7 +274,6 @@ if (empty($freeTimes)) {
         <ul class="bullets">
           <li>Text messages</li>
           <li>Submit files</li>
-          <li>Send voice</li>
           <li>No call/video for now</li>
         </ul>
 

@@ -6,7 +6,6 @@ require_once("../Model/loginModel.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // Cancel
     if (isset($_POST['cancelSignup'])) {
         session_unset();
         session_destroy();
@@ -25,7 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $confirmPassword = $_POST['confirmPassword'] ?? "";
     $otpEnter = $_POST['otp'] ?? "";
 
-    // EMAIL VALIDATION (for both Send OTP and Submit)
     if (empty($email)) {
         $sEmailErr = "email cannot be empty";
         $hasErr = true;
@@ -48,7 +46,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // SEND OTP
     if (isset($_POST['resendOtp'])) {
 
         if ($hasErr) {
@@ -64,10 +61,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // SUBMIT
     if (isset($_POST['submit'])) {
 
-        // Password validate
         if (empty($pass)) {
             $sPasswordErr = "password cannot be empty";
             $hasErr = true;
@@ -79,13 +74,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $hasErr = true;
         }
 
-        // Confirm password
         if ($confirmPassword !== $pass) {
             $confirmPasswordErr = "Password and Confirm Password miss match.";
             $hasErr = true;
         }
 
-        // OTP validate
         if (empty($otpEnter)) {
             $otpErr = "OTP cannot be empty";
             $hasErr = true;
@@ -115,7 +108,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         sendMessage($_SESSION['s_email'], $_SESSION['s_id'], $pass);
 
-        // Clear session after success
         session_unset();
         session_destroy();
 

@@ -23,15 +23,32 @@
         }
     }
 
-    function updateData($id, $name, $gender, $email, $password,$s_propic){
+    function updateData($id, $name, $gender,$s_propic){
         
-        $query="UPDATE student SET s_name=$name,s_gender=$gender,s_email=$email,s_password=$password,s_propic=$s_propic WHERE s_id=$id";
+        $query="UPDATE student SET s_name='$name',s_gender='$gender',s_propic='$s_propic' WHERE s_id='$id'";
         $conn=dbConnect();
         $data=mysqli_query($conn,$query);
+
     }
+    function updateStudentStatus($id, $status){
+    $conn = dbConnect();
+    $id = mysqli_real_escape_string($conn, $id);
+    $status = (int)$status;
+
+    $query = "UPDATE student SET status=$status WHERE s_id='$id'";
+    return mysqli_query($conn, $query);
+    }
+
     function deleteData($id){
         
-        $query="DELETE FROM student WHERE s_id=$id";
+        $query="DELETE FROM student WHERE s_id='$id'";
+        $conn=dbConnect();
+
+        $data=mysqli_query($conn,$query);
+    }
+     function deleteStudent($id){
+        
+        $query="DELETE FROM student WHERE s_id='$id'";
         $conn=dbConnect();
 
         $data=mysqli_query($conn,$query);
@@ -81,6 +98,7 @@
             $query = "SELECT * FROM student WHERE s_id = '$id'";
             return mysqli_query($conn, $query);
         }
+
      function getStudentByEmail($email){ 
             $query="SELECT * FROM student WHERE s_email='$email'";
             $conn=dbConnect();

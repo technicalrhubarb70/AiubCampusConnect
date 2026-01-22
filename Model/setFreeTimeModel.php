@@ -22,13 +22,14 @@
 
         $data=mysqli_query($conn,$query);
     }
-    function deleteFreeTime($s_id,$t_id){
+    function deleteFreeTime($s_id){
         
-        $query="DELETE FROM free_time WHERE s_id='$s_id' AND t_id='$t_id'";
+        $query="DELETE FROM free_time WHERE s_id='$s_id'";
         $conn=dbConnect();
 
         $data=mysqli_query($conn,$query);
     }
+    
     function getFreeTimeByStudentId($s_id)
     {
         $query = "SELECT * FROM free_time WHERE s_id='$s_id' ";

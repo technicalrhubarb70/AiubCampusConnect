@@ -131,9 +131,9 @@ $success = $_GET['success'] ?? "";
                 <input type="hidden" name="sender_id" value="<?php echo htmlspecialchars($_SESSION['loginId']); ?>">
                 <input type="hidden" name="receiver_id" value="<?php echo htmlspecialchars($receiver_id); ?>">
                 <label>Message</label>
-                <textarea name="message" placeholder="Write message..."></textarea>
-                <button type="submit" name="sendMessage">Send</button>
+                <textarea name="message" rows="2" cols="100" placeholder="Write message..."></textarea>
                 <input type="file" name="attachment">
+                <button type="submit" name="sendMessage">Send</button>
             </form>
 
       </footer>

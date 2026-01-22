@@ -15,8 +15,6 @@ if ($_SERVER["REQUEST_METHOD"]=="POST"){
     $pass=$_POST['sPassword'];
     $email=$_POST['sEmail'];
     $file=$_FILES['sProPic'];
-    $upload_dir = "../Resources/";
-    $upload_dir_real = __DIR__ . "/../Resources/";   // REAL filesystem path (Controller -> Resources)
     $path="";
 
 
@@ -55,35 +53,29 @@ if ($_SERVER["REQUEST_METHOD"]=="POST"){
             $hasErr=true;
         }
     }
-
-    if(isset($file) && $file['error'] != UPLOAD_ERR_NO_FILE){
-
-         $allowed_types=['image/jpeg', 'image/png'];
-        if(!in_array($file['type'], $allowed_types))
-        {
-            $sProPicErr="only jpeg and png  files are allowed";
-            $hasErr=true;
+        $fileName = ""; 
+        if (isset($_FILES["sProPic"]) && $_FILES["sProPic"]["error"] !== UPLOAD_ERR_NO_FILE) { 
+                $file = $_FILES["sProPic"]; 
+                if ($file["error"] !== UPLOAD_ERR_OK) {
+                    $sProPicErr = "File upload error"; 
+                } else { 
+                $allowedTypes = ["image/jpeg", "image/png"];
+                if (!in_array($file["type"], $allowedTypes)) { 
+                    $sProPicErr = "Invalid file type. Only JPG and PNG allowed."; 
+                } else { 
+                    $uploadDir = "../Resourses/"; 
+                    if (!is_dir($uploadDir)) { 
+                        mkdir($uploadDir, 0755, true);
+                    }
+                    $fileName = uniqid() . "_" . basename($file["name"]);
+                    $targetPath = $uploadDir . $fileName; 
+                    if (!move_uploaded_file($file["tmp_name"], $targetPath)) { 
+                        $sProPicErr = "Failed to move uploaded file.";
+                    }
+                }
+            } 
         }
-        $maxsize=2*1024*1024; //2MB
-        if($file['size'] > $maxsize)
-        {
-            $sProPicErr="file size should not exceed 2MB";
-            $hasErr=true;
-        }
-
-        if(!$hasErr){
-            $path = $upload_dir . basename($file["name"]);
-            $path_real = $upload_dir_real . basename($file["name"]);   // ✅ real path for move
-            $_SESSION["img_name"]=$file["tmp_name"];
-        }
-
-        }
-
-    }
-    else if ($file['error'] == UPLOAD_ERR_NO_FILE && !$hasErr){
-        $path=$upload_dir."emptyImg.jpg";
-        
-    }
+     }
 
     if(!$hasErr){
 
@@ -93,14 +85,13 @@ if ($_SERVER["REQUEST_METHOD"]=="POST"){
         $_SESSION['s_gender']=$gender;
         $_SESSION['real_password']=$pass;
         $_SESSION['s_password']= password_hash($pass, PASSWORD_DEFAULT);
-        $_SESSION['s_email']=$email;$_SESSION['img_path']=$path;
-        move_uploaded_file($file["tmp_name"], $path_real);
-
+        $_SESSION['s_email']=$email;
+        $_SESSION['img_path']=$targetPath;
         $otp= rand(100000, 999999);
         $_SESSION['otp']=$otp;
-        //$emailSent= sendOtp($email,$otp);
-
-        header("Location:../View/student/emailVerificationView.php?otp=".$otp);
+        $emailSent= sendOtp($email,$otp);
+        header("Location:../View/student/emailVerificationView.php");
+        //header("Location:../View/student/emailVerificationView.php?otp=".$otp);
     }else{
         header("Location: ../View/student/signUpView.php?sNameErr=".$sNameErr."&sGenderErr=".$sGenderErr. "&sPasswordErr=".$sPasswordErr."&sEmailErr=".$sEmailErr."&sProPicErr=".$sProPicErr);
        

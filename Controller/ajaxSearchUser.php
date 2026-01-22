@@ -13,14 +13,7 @@ $q=mysqli_real_escape_string($conn,$q);
 if($q===""){
     exit();
 }
-
-/* adjust column names if needed */
-$sql="
-SELECT s_id AS uid,s_name AS uname
-FROM student
-WHERE s_id LIKE '%$q%' OR s_name LIKE '%$q%'
-LIMIT 10
-";
+$sql="SELECT s_id AS uid,s_name AS uname FROM student WHERE s_id LIKE '%$q%' OR s_name LIKE '%$q%'LIMIT 10 ";
 
 $res=mysqli_query($conn,$sql);
 if(!$res){
