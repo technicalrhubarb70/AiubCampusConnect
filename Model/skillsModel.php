@@ -1,11 +1,6 @@
 <?php
 require_once(__DIR__ . "/dbconnect.php");
 
-// table: skills
-// columns: skill_id, skill_name, s_id
-
-
-// insert a new skill for a student
 function insertskill($skill_id, $skill_name, $s_id)
 {
     $conn = dbconnect();
@@ -21,7 +16,6 @@ function insertskill($skill_id, $skill_name, $s_id)
 }
 
 
-// get all skills of a student
 function getskillsbystudentid($s_id)
 {
     $conn = dbconnect();
@@ -41,7 +35,6 @@ function getskillsbystudentid($s_id)
 }
 
 
-// update a skill name
 function updateskill($skill_id, $newskillname)
 {
     $conn = dbconnect();
@@ -56,8 +49,6 @@ function updateskill($skill_id, $newskillname)
     return mysqli_query($conn, $query);
 }
 
-
-// delete a single skill
 function deleteskill($skill_id)
 {
     $conn = dbconnect();
@@ -66,9 +57,13 @@ function deleteskill($skill_id)
     $query = "delete from skills where skill_id='$skill_id'";
     return mysqli_query($conn, $query);
 }
+function deleteskillByStudentId($s_id)
+{
+    $conn = dbconnect();
+    $query = "delete from skills where s_id='$s_id'";
+    return mysqli_query($conn, $query);
+}
 
-
-// get only skill names of a student
 function getskillnamesbystudentid($s_id)
 {
     $conn = dbconnect();
@@ -88,7 +83,6 @@ function getskillnamesbystudentid($s_id)
 }
 
 
-// find other students who share skills
 function getmatchedstudentsbyskills($s_id)
 {
     $conn = dbconnect();
