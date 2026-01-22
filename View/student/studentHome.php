@@ -136,31 +136,7 @@ if(empty($studentIds)){
 
 ?>
 </span><br><br>
-        <form method="GET" action="../../Controller/studentHomeBreakTimeController.php">
-        <input type="submit" class="card-btn" name="viewFreeTime" value="Suggest matches">
-        </form>
-        <span ><?php 
-          $studentIds=$_SESSION['matchedStudentIds'];
-          $tutorIds=$_SESSION['matchedTutorIds'];
-
-        echo "<h3>Matched Student IDs</h3>";
-        if(empty($studentIds)){
-            echo "No matched students.<br>";
-        }else{
-            foreach($studentIds as $id){
-                echo $id."<br>";
-            }
-        }
-
-        echo "<h3>Matched Tutor IDs</h3>";
-        if(empty($tutorIds)){
-            echo "No matched tutors.<br>";
-        }else{
-            foreach($tutorIds as $id){
-                echo $id."<br>";
-            }
-        }
-         ?></span>
+        
         <form method="GET" action="../../Controller/studentHomeBreakTimeController.php">
         <input type="submit" class="card-btn" name="viewFreeTime" value="Suggest matches">
         </form>
