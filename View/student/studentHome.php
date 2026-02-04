@@ -2,26 +2,45 @@
 session_start();
 require_once("../../Model/studentModel.php");
 require_once("../../Model/skillsModel.php");
-$studentIds=$_SESSION['matchedStudentIds'];
-$student = mysqli_fetch_assoc(getStudentById($_SESSION['loginId']));
+
+if (!isset($_SESSION['loginId']) || !isset($_SESSION['role'])) {
+    header("Location:../loginView.php");
+    exit();
+}
 
 if ($_SESSION['role'] != 2) {
     header("Location:../loginView.php");
     exit();
 }
 
-if(!isset($_SESSION['loginId'])||!isset($_SESSION['role'])){
-    header("Location:../loginView.php");
-    exit();
-}
+/* FIX WARNING */
+$studentIds = $_SESSION['matchedStudentIds'] ?? [];
+
+/* Load student data */
+$studentRes = getStudentById($_SESSION['loginId']);
+$student = mysqli_fetch_assoc($studentRes);
 
 if (!$student) {
-  $student = [
-    's_name' => 'Unknown',
-    'status' => 0
-  ];
+    $student = [
+        's_name' => 'Unknown',
+        'status' => 0,
+        's_propic' => ''
+    ];
 }
+
 $skillsRes = getSkillsByStudent($_SESSION['loginId']);
+
+/* ===== Profile picture path =====
+   In DB we expect: "Resources/filename.png"
+   studentHome.php is in View/student/
+   So to reach root: ../../
+*/
+$pic = $student['s_propic'] ?? '';
+if ($pic === '') {
+    $avatarSrc = "../../Resources/default.png"; // put a default.png there
+} else {
+    $avatarSrc = "../../" . $pic;
+}
 ?>
 
 <!DOCTYPE html>
@@ -30,12 +49,11 @@ $skillsRes = getSkillsByStudent($_SESSION['loginId']);
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AIUB CampusConnect | Home</title>
-
   <link rel="stylesheet" href="studentHome.css" />
 </head>
 
 <body>
-  
+
   <header class="topbar">
     <a class="brand" href="#">
       <span class="brand-mark">AC</span>
@@ -50,42 +68,55 @@ $skillsRes = getSkillsByStudent($_SESSION['loginId']);
 
       <details class="profile" id="profileBox">
         <summary class="profile-btn">
-          <span class="avatar" aria-hidden="true"></span>
+
+          <!--PROFILE PIC SHOWS HERE -->
+          <img
+            class="avatar"
+            src="<?php echo htmlspecialchars($avatarSrc); ?>"
+            alt="Profile picture"
+            width="36"
+            height="36"
+            style="border-radius:50%; object-fit:cover;"
+          />
+
           <span class="profile-meta">
             <strong class="profile-name"><?php echo htmlspecialchars($student['s_name']); ?></strong>
             <small class="profile-role">ID: <?php echo htmlspecialchars($_SESSION['loginId']); ?></small>
-
           </span>
           <span class="chev" aria-hidden="true"></span>
         </summary>
 
         <menu class="dropdown" aria-label="Profile menu">
-          
           <li>
             <form action="studentProfileView.php" method="GET">
-            <input type="submit" class="menu-item" name='edit_Profile ' value="Edit Profile "></li>
-           </form>
+              <input type="submit" class="menu-item" name="edit_Profile" value="Edit Profile">
+            </form>
+          </li>
+
           <li>
-            <form action="addSkillView.php" method="get">
+            <form action="addSkillView.php" method="GET">
               <button type="submit" class="menu-item">Add skills</button>
             </form>
           </li>
-          <form method="GET" action="../setFreeTimeView.php">
-            <input type="submit" class="menu-item" name="viewFreeTime" value="Add breaktime">
-          </form>
-          </li>
-          <li class="menu-sep"></li>
+
           <li>
-            <li>
-              <form action="studentCourseView.php" method="GET">
-             <input type="submit" class="menu-item" value="Add Courses">
+            <form method="GET" action="../setFreeTimeView.php">
+              <input type="submit" class="menu-item" name="viewFreeTime" value="Add breaktime">
             </form>
-            </li>
-
-            <button class="menu-item danger" type="button"
-          onclick="window.location.href='../../Controller/logout.php'">Logout</button>
           </li>
 
+          <li class="menu-sep"></li>
+
+          <li>
+            <form action="studentCourseView.php" method="GET">
+              <input type="submit" class="menu-item" value="Add Courses">
+            </form>
+          </li>
+
+          <li>
+            <button class="menu-item danger" type="button"
+              onclick="window.location.href='../../Controller/logout.php'">Logout</button>
+          </li>
         </menu>
       </details>
     </nav>
@@ -102,128 +133,225 @@ $skillsRes = getSkillsByStudent($_SESSION['loginId']);
       </form>
     </section>
 
-    <?php if (isset($_SESSION['search_results'])): ?>
-    <section class="search-results">
-      <h2>Search Results</h2>
-      <ul>
-        <?php while ($row = mysqli_fetch_assoc($_SESSION['search_results'])): ?>
-        <li>
-          <strong><?php echo htmlspecialchars($row['s_name']); ?></strong> (<?php echo htmlspecialchars($row['s_id']); ?>) - Courses: <?php echo htmlspecialchars($row['courses'] ?: 'None'); ?>
-        </li>
-        <?php endwhile; ?>
-      </ul>
-    </section>
-    <?php unset($_SESSION['search_results']); endif; ?>
-
     <section class="grid">
+      <!-- ===================== BREAK MATCH ===================== -->
       <article class="card">
         <header class="card-head">
           <h2>Break Match</h2>
           <p>Find someone free at the same time for adda.</p>
         </header>
-        <span ><?php
-              $studentIds=$_SESSION['matchedStudentIds']??[];
-              echo "<h3>Matched Student IDs</h3>";
-              if(empty($studentIds)){
-                  echo "No matched students.<br>";
-              }else{
-                  foreach ($studentIds as $id) {
-                  ?>
-                          <?php echo "ID: ".$id ; ?>
-                          <form action="../../Controller/studentDashboardController.php" method="GET" style="display:inline;">
-                            <input type="hidden" name="receiver_id" value="<?= htmlspecialchars($id) ?>">
-                            <input type="submit"  value="Send Message to <?= htmlspecialchars($id) ?>">
-                          </form>
-                  <?php
-                  }
-              }
 
-              ?>
-      </span><br><br>
-      <form method="GET" action="../../Controller/studentHomeBreakTimeController.php">
-        <input type="submit" class="card-btn" name="viewFreeTime" value="Suggest matches">
-        </form>
-        </article>
-
-      <article class="card">
-  <header class="card-head">
-    <h2>Skill Match</h2>
-    <p>Connect with people with similar skillsets.</p>
-  </header>
-
-  <?php
-$msg = $_SESSION['skill_match_msg'] ?? "";
-if ($msg !== "") {
-    echo "<p>" . htmlspecialchars($msg) . "</p>";
-    unset($_SESSION['skill_match_msg']);
-}
-
-$skillmatches = $_SESSION['skill_matches'] ?? [];
-
-if (!empty($skillmatches)) {
-    foreach ($skillmatches as $m) {
-        $sid = $m['s_id'] ?? '';
-        $common = $m['common_skills'] ?? '';
-
-        echo "<strong>" . htmlspecialchars($m['s_name'] ?? 'Unknown') . "</strong> (" . htmlspecialchars($sid) . ")<br>";
-
-        ?>
-        <form action="../../Controller/messageController.php" method="GET" style="display:inline;">
-            <input type="hidden" name="peer_receiver_id" value="<?= htmlspecialchars($sid) ?>">
-            <button type="submit">Send Message</button>
-        </form>
         <?php
+        echo "<h3>Matched Student IDs</h3>";
+        if (empty($studentIds)) {
+            echo "No matched students.<br>";
+        } else {
+            foreach ($studentIds as $id) {
 
-        echo " <small>common: " . htmlspecialchars($common) . "</small><br><br>";
-    }
-} else {
-    echo "<small>No skill matches yet.</small>";
-}
-?>
+                $mRes = getStudentById($id);
+                $m = mysqli_fetch_assoc($mRes);
 
-  
+                if (!$m) {
+                    $m = [
+                        's_name' => 'Unknown',
+                        's_propic' => ''
+                    ];
+                }
 
-  <!-- keep match button working -->
-   <form method="get" action="../../Controller/skillMatch.php">
-    <input type="submit" class="card-btn" value="Suggest matches">
-  </form>
+                $mPic = $m['s_propic'] ?? '';
+                if ($mPic === '') {
+                    $mAvatar = "../../Resources/default.png";
+                } else {
+                    $mAvatar = "../../" . $mPic;
+                }
+                ?>
 
-</article>
+                <div class="profile-btn" style="margin:8px 0; cursor:default;">
+                    <img
+                        class="avatar"
+                        src="<?= htmlspecialchars($mAvatar) ?>"
+                        alt="Profile picture"
+                        width="36"
+                        height="36"
+                        style="border-radius:50%; object-fit:cover;"
+                    />
 
-<article class="card">
-  <header class="card-head">
-    <h2>Course Match</h2>
-    <p>Find students taking the same course.</p>
-  </header>
+                    <span class="profile-meta">
+                        <strong class="profile-name"><?= htmlspecialchars($m['s_name']) ?></strong>
+                        <small class="profile-role">ID: <?= htmlspecialchars($id) ?></small>
+                    </span>
 
-  <?php
-  $courseMatches=$_SESSION['course_matches']??[];
+                    <form action="../../Controller/studentDashboardController.php" method="GET" style="margin-left:auto;">
+                        <input type="hidden" name="receiver_id" value="<?= htmlspecialchars($id) ?>">
+                        <button type="submit" class="menu-item">Send Message</button>
+                    </form>
+                </div>
 
-  if(empty($courseMatches)){
-      echo "<small>No course matches yet.</small>";
-  }else{
-      foreach($courseMatches as $m){
-          ?>
-          <strong>Course: <?= htmlspecialchars($m['course']) ?></strong><br>
-          Student ID: <?= htmlspecialchars($m['s_id']) ?>
+                <?php
+            }
+        }
+        ?>
 
-          <form action="../../Controller/messageController.php" method="GET" style="display:inline;">
-          <input type="hidden" name="peer_receiver_id" value="<?= htmlspecialchars($m['s_id']) ?>">
-          <button type="submit">Send Message</button>
-          </form>
+        <form method="GET" action="../../Controller/studentHomeBreakTimeController.php">
+          <input type="submit" class="card-btn" name="viewFreeTime" value="Suggest matches">
+        </form>
+      </article>
 
-          <br><br>
-          <?php
-      }
-  }
-  ?>
-<form method="GET" action="../../Controller/studentHomeCourseController.php">
-    <input type="submit" class="card-btn" value="Suggest matches">
-</form>
-</article>
+      <!-- ===================== SKILL MATCH ===================== -->
+      <article class="card">
+        <header class="card-head">
+          <h2>Skill Match</h2>
+          <p>Connect with people with similar skillsets.</p>
+        </header>
 
+        <?php
+        $msg = $_SESSION['skill_match_msg'] ?? "";
+        if ($msg !== "") {
+            echo "<p>" . htmlspecialchars($msg) . "</p>";
+            unset($_SESSION['skill_match_msg']);
+        }
 
-      
+        $skillmatches = $_SESSION['skill_matches'] ?? [];
+
+        if (empty($skillmatches)) {
+            echo "<small>No skill matches yet.</small>";
+        } else {
+            foreach ($skillmatches as $sm) {
+
+                $sid = $sm['s_id'] ?? '';
+                $common = $sm['common_skills'] ?? '';
+
+                // Load student for photo (in case controller didn't send propic)
+                $mRes = getStudentById($sid);
+                $m = mysqli_fetch_assoc($mRes);
+
+                if (!$m) {
+                    $m = [
+                        's_name' => ($sm['s_name'] ?? 'Unknown'),
+                        's_propic' => ''
+                    ];
+                } else {
+                    // If controller already provides name, keep DB name anyway
+                    if (empty($m['s_name']) && isset($sm['s_name'])) {
+                        $m['s_name'] = $sm['s_name'];
+                    }
+                }
+
+                $mPic = $m['s_propic'] ?? '';
+                if ($mPic === '') {
+                    $mAvatar = "../../Resources/default.png";
+                } else {
+                    $mAvatar = "../../" . $mPic;
+                }
+                ?>
+
+                <div class="profile-btn" style="margin:8px 0; cursor:default;">
+                    <img
+                        class="avatar"
+                        src="<?= htmlspecialchars($mAvatar) ?>"
+                        alt="Profile picture"
+                        width="36"
+                        height="36"
+                        style="border-radius:50%; object-fit:cover;"
+                    />
+
+                    <span class="profile-meta">
+                        <strong class="profile-name"><?= htmlspecialchars($m['s_name'] ?? 'Unknown') ?></strong>
+                        <small class="profile-role">
+                            ID: <?= htmlspecialchars($sid) ?><br>
+                            <?php if ($common !== '') { ?>
+                                common: <?= htmlspecialchars($common) ?>
+                            <?php } ?>
+                        </small>
+                    </span>
+
+                    <form action="../../Controller/messageController.php" method="GET" style="margin-left:auto;">
+                        <input type="hidden" name="peer_receiver_id" value="<?= htmlspecialchars($sid) ?>">
+                        <button type="submit" class="menu-item">Send Message</button>
+                    </form>
+                </div>
+
+                <?php
+            }
+        }
+        ?>
+
+        <form method="GET" action="../../Controller/skillMatch.php">
+          <input type="submit" class="card-btn" value="Suggest matches">
+        </form>
+      </article>
+
+      <!-- ===================== COURSE MATCH ===================== -->
+      <article class="card">
+        <header class="card-head">
+          <h2>Course Match</h2>
+          <p>Find students taking the same course.</p>
+        </header>
+
+        <?php
+        $courseMatches = $_SESSION['course_matches'] ?? [];
+
+        if (empty($courseMatches)) {
+            echo "<small>No course matches yet.</small>";
+        } else {
+            foreach ($courseMatches as $cm) {
+
+                $sid = $cm['s_id'] ?? '';
+                $course = $cm['course'] ?? '';
+
+                $mRes = getStudentById($sid);
+                $m = mysqli_fetch_assoc($mRes);
+
+                if (!$m) {
+                    $m = [
+                        's_name' => 'Unknown',
+                        's_propic' => ''
+                    ];
+                }
+
+                $mPic = $m['s_propic'] ?? '';
+                if ($mPic === '') {
+                    $mAvatar = "../../Resources/default.png";
+                } else {
+                    $mAvatar = "../../" . $mPic;
+                }
+                ?>
+
+                <div class="profile-btn" style="margin:8px 0; cursor:default;">
+                    <img
+                        class="avatar"
+                        src="<?= htmlspecialchars($mAvatar) ?>"
+                        alt="Profile picture"
+                        width="36"
+                        height="36"
+                        style="border-radius:50%; object-fit:cover;"
+                    />
+
+                    <span class="profile-meta">
+                        <strong class="profile-name"><?= htmlspecialchars($m['s_name']) ?></strong>
+                        <small class="profile-role">
+                            ID: <?= htmlspecialchars($sid) ?><br>
+                            <?php if ($course !== '') { ?>
+                                course: <?= htmlspecialchars($course) ?>
+                            <?php } ?>
+                        </small>
+                    </span>
+
+                    <form action="../../Controller/messageController.php" method="GET" style="margin-left:auto;">
+                        <input type="hidden" name="peer_receiver_id" value="<?= htmlspecialchars($sid) ?>">
+                        <button type="submit" class="menu-item">Send Message</button>
+                    </form>
+                </div>
+
+                <?php
+            }
+        }
+        ?>
+
+        <form method="GET" action="../../Controller/studentHomeCourseController.php">
+          <input type="submit" class="card-btn" value="Suggest matches">
+        </form>
+      </article>
     </section>
 
     <section class="content">
@@ -234,47 +362,21 @@ if (!empty($skillmatches)) {
         </header>
 
         <ul class="list">
-          <li><span class="k">Name</span><span class="v"><?php echo $student['s_name']; ?></span></li>
-          <li><span class="k">Status</span><span class="v"><?php echo $student['status'] == 1 ? 'Active' : 'Inactive'; ?></span></li>
+          <li><span class="k">Name</span><span class="v"><?php echo htmlspecialchars($student['s_name']); ?></span></li>
+          <li><span class="k">Status</span><span class="v"><?php echo ($student['status'] == 1 ? 'Active' : 'Inactive'); ?></span></li>
           <li>
-  <span class="k">Skills</span>
-  <span class="v">
-    <?php
-      $skills = [];
-      while($r = mysqli_fetch_assoc($skillsRes)){ $skills[] = $r['skill_name']; }
-      echo htmlspecialchars(count($skills) ? implode(", ", $skills) : "None");
-    ?>
-  </span>
-</li>
-
-<li>
-  <span class="k">Free time</span>
-  <?php
-  require_once("../../Model/setFreeTimeModel.php");
-  $freeTimes = getFreeTimeByStudentId($_SESSION['loginId']);
-
-if (empty($freeTimes)) {
-    echo "None";
-} else {
-    foreach ($freeTimes as $ft) {
-        echo htmlspecialchars($ft['day']) . ": " . htmlspecialchars($ft['free_times']) . "<br>";
-    }
-}
-?>
-
-    
-  </span>
-</li>
-
-
-
+            <span class="k">Skills</span>
+            <span class="v">
+              <?php
+              $skills = [];
+              while ($r = mysqli_fetch_assoc($skillsRes)) {
+                  $skills[] = $r['skill_name'];
+              }
+              echo htmlspecialchars(count($skills) ? implode(", ", $skills) : "None");
+              ?>
+            </span>
+          </li>
         </ul>
-
-        <footer class="panel-foot">
-          <form action="studentProfileView.php" method="GET">
-            <input type="submit" class="ghost" value="Open profile editor">
-          </form>
-        </footer>
       </article>
 
       <aside class="panel">

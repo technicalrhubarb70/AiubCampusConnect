@@ -7,7 +7,9 @@ if(isset($_POST['add']))
     $name     = $_POST['name'];
     $gender   = $_POST['gender'];
     $email    = $_POST['email'];
-    $password = $_POST['password'];
+
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
     $role     = $_POST['role'];
     $status   = $_POST['status'];
 
@@ -24,6 +26,10 @@ if(isset($_POST['add']))
     }
 
     if($res === true){
+
+        require_once("../../Model/loginModel.php");
+        insertDataLogin($id, $password, $role);
+
         header("Location: ../../View/admin/adminHome.php?success=added");
         exit();
     }

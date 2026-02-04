@@ -1,5 +1,6 @@
 <?php
 require_once("../../Model/adminModel.php");
+require_once("../../Model/loginModel.php");
 
 if(!isset($_GET['id']) || !isset($_GET['status'])){
     echo "ERR";
@@ -7,16 +8,21 @@ if(!isset($_GET['id']) || !isset($_GET['status'])){
 }
 
 $id = $_GET['id'];
-$status = $_GET['status'];
+$currentStatus = (int)$_GET['status'];
 
-$newStatus = ($status == 1) ? 0 : 1;
+$newStatus = ($currentStatus === 1) ? 0 : 1;
 
-$ok = updateUserStatus($id, $newStatus);
+// Update student table
+$ok1 = updateUserStatus($id, $newStatus);
 
-if($ok){
+// Update login table
+$ok2 = updateStatusLogin($id, $newStatus);
+
+// DEBUG (remove after test)
+// echo "Student: ".($ok1?1:0)." Login: ".($ok2?1:0);
+
+if($ok1 && $ok2){
     echo $newStatus;
-}else{
-  
-    echo $newStatus;
+} else {
+    echo "ERR";
 }
-?>

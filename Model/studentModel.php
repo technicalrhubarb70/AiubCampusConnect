@@ -2,8 +2,6 @@
     require_once("dbConnect.php");
 
   
-
-
     function insertData($id, $name, $gender, $email, $password,$created_at, $s_propic){
         
         $query="INSERT INTO student (s_id,s_name,s_gender,s_email,s_password,role,status,created_at,s_propic) VALUES ('$id','$name','$gender','$email','$password',2,1,'$created_at','$s_propic')";
@@ -31,12 +29,12 @@
 
     }
     function updateStudentStatus($id, $status){
-    $conn = dbConnect();
-    $id = mysqli_real_escape_string($conn, $id);
-    $status = (int)$status;
+        $conn = dbConnect();
+        $id = mysqli_real_escape_string($conn, $id);
+        $status = (int)$status;
 
-    $query = "UPDATE student SET status=$status WHERE s_id='$id'";
-    return mysqli_query($conn, $query);
+        $query = "UPDATE student SET status=$status WHERE s_id='$id'";
+        return mysqli_query($conn, $query);
     }
 
     function deleteData($id){
@@ -47,12 +45,11 @@
         $data=mysqli_query($conn,$query);
     }
      function deleteStudent($id){
-        
+        $conn = dbConnect();
         $query="DELETE FROM student WHERE s_id='$id'";
-        $conn=dbConnect();
+        return mysqli_query($conn,$query);  // IMPORTANT
+}
 
-        $data=mysqli_query($conn,$query);
-    }
     function getDataByIdPassword($id, $role){
             $conn = dbConnect();
             $id = mysqli_real_escape_string($conn, $id);

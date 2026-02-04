@@ -8,14 +8,19 @@ if(!isset($_GET['id'])){
 }
 
 $id = $_GET['id'];
+$user = getUserById($id);
 
+if(!$user){
+    echo "User not found";
+    exit();
+}
 ?>
+
 <!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
     <title>Edit User</title>
-
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
@@ -25,7 +30,8 @@ $id = $_GET['id'];
 
 <form method="post" action="../../Controller/admin/updateUser.php">
 
-
+    <!-- hidden ID (VERY IMPORTANT) -->
+    <input type="hidden" name="s_id" value="<?php echo $user['s_id']; ?>">
 
     <table>
         <tr>
@@ -37,35 +43,38 @@ $id = $_GET['id'];
             <td>ID</td>
             <td>
                 <input type="text" value="<?php echo $user['s_id']; ?>" disabled>
-                <small>ID cannot be changed</small>
             </td>
         </tr>
 
         <tr>
             <td>Name</td>
-            <td><input type="text" name="name" value="<?php echo $user['s_name']; ?>" required></td>
+            <td>
+                <input type="text" name="s_name" value="<?php echo $user['s_name']; ?>" required>
+            </td>
         </tr>
 
         <tr>
             <td>Gender</td>
             <td>
-                <select name="gender" required>
-                    <option value="male"   <?= ($user['s_gender']=="male")?"selected":""; ?>>male</option>
+                <select name="s_gender" required>
+                    <option value="male" <?= ($user['s_gender']=="male")?"selected":""; ?>>male</option>
                     <option value="female" <?= ($user['s_gender']=="female")?"selected":""; ?>>female</option>
-                    <option value="other"  <?= ($user['s_gender']=="other")?"selected":""; ?>>other</option>
+                    <option value="other" <?= ($user['s_gender']=="other")?"selected":""; ?>>other</option>
                 </select>
             </td>
         </tr>
 
         <tr>
             <td>Email</td>
-            <td><input type="email" name="email" value="<?php echo $user['s_email']; ?>" required></td>
+            <td>
+                <input type="email" name="s_email" value="<?php echo $user['s_email']; ?>" required>
+            </td>
         </tr>
 
         <tr>
             <td>New Password</td>
             <td>
-                <input type="password" name="password">
+                <input type="password" name="s_password">
                 <small>Leave blank to keep old password</small>
             </td>
         </tr>
@@ -94,7 +103,7 @@ $id = $_GET['id'];
         <tr>
             <td>Action</td>
             <td>
-                <button type="submit" name="update">Update</button>
+                <button type="submit" name="updateUser">Update</button>
                 <a href="adminHome.php">Back</a>
             </td>
         </tr>

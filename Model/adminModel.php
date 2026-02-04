@@ -24,64 +24,28 @@ function getAllUsers()
 function getUserById($id)
 {
     $conn = dbConnect();
-    $res = mysqli_query(
-        $conn,
-        "SELECT s_id, s_name, s_gender, s_email, role, status
-         FROM student
-         WHERE s_id='$id'"
-    );
-
-    if($res && mysqli_num_rows($res) == 1){
-        return mysqli_fetch_assoc($res);
-    }
-    return null;
+    $query = "SELECT * FROM student WHERE s_id='$id'";
+    $result = mysqli_query($conn, $query);
+    return mysqli_fetch_assoc($result);
 }
+
 
 function updateUser($id, $name, $gender, $email, $password, $role, $status)
 {
     $conn = dbConnect();
 
-    if($password != ""){
-        mysqli_query($conn,
-            "UPDATE student
-             SET s_name='$name',
-                 s_gender='$gender',
-                 s_email='$email',
-                 s_password='$password',
-                 role=$role,
-                 status=$status
-             WHERE s_id='$id'"
-        );
+    $query = "UPDATE student SET
+                s_name='$name',
+                s_gender='$gender',
+                s_email='$email',
+                s_password='$password',
+                role='$role',
+                status='$status'
+              WHERE s_id='$id'";
 
-        mysqli_query($conn,
-            "UPDATE login
-             SET login_password='$password',
-                 role=$role,
-                 status=$status
-             WHERE login_id='$id'"
-        );
-    }
-    else{
-        mysqli_query($conn,
-            "UPDATE student
-             SET s_name='$name',
-                 s_gender='$gender',
-                 s_email='$email',
-                 role=$role,
-                 status=$status
-             WHERE s_id='$id'"
-        );
-
-        mysqli_query($conn,
-            "UPDATE login
-             SET role=$role,
-                 status=$status
-             WHERE login_id='$id'"
-        );
-    }
-
-    return !mysqli_error($conn);
+    return mysqli_query($conn, $query);
 }
+
 
 
 function deleteUser($id)

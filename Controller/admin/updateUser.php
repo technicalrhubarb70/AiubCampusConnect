@@ -1,5 +1,6 @@
 <?php
 require_once("../../Model/adminModel.php");
+require_once("../../Model/loginModel.php");
 
 if(isset($_POST['updateUser']))
 {
@@ -9,31 +10,24 @@ if(isset($_POST['updateUser']))
     $email  = $_POST['s_email'];
     $role   = $_POST['role'];
     $status = $_POST['status'];
-
     $newPass = $_POST['s_password'];
 
     $old = getUserById($id);
-    if($old == null){
-        header("Location: ../../View/admin/adminHome.php?error=notfound");
-        exit();
-    }
 
-    $finalPass = $newPass;
-    if($finalPass == ""){
-        $finalPass = $old['s_password'];
-    }
-    $propic = $old['s_propic'];
+    if(empty($newPass)){
+        $finalPass = $old['s_password']; // keep old hash
+}
+    else{
+        $finalPass = password_hash($newPass, PASSWORD_DEFAULT);
+        updateLoginPassword($id, $finalPass);
+}
 
-    $ok = updateUser($id, $name, $gender, $email, $finalPass, $role, $status, $propic);
+    $ok = updateUser($id, $name, $gender, $email, $finalPass, $role, $status);
 
     if($ok){
-        header("Location: ../../View/admin/adminHome.php");
-    }else{
-        header("Location: ../../View/admin/editUserView.php?id=$id&error=failed");
+        header("Location: ../../View/admin/adminHome.php?success=updated");
+    } else {
+        echo "Update failed";
     }
-}
-else
-{
-    header("Location: ../../View/admin/adminHome.php");
 }
 ?>
