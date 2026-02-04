@@ -10,7 +10,7 @@
     <main class="auth-container">
         <section class="auth-card">
             <header class="logo-section">
-                <img src="../Resourses/logo.png" alt="MuseumConnect Logo" class="logo">
+                <img src="../Resources/logo.png" alt="MuseumConnect Logo" class="logo">
             </header>
             
             <h1 class="auth-title">Login</h1>

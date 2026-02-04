@@ -14,7 +14,7 @@
     <div class="signup-card">
 
         <div class="logo-wrapper">
-            <img src="../Model/Resources/logo.png" class="signup-image" alt="Signup Image">
+            <img src="../Resources/logo.png" class="signup-image" alt="Signup Image">
             
         </div>
 
