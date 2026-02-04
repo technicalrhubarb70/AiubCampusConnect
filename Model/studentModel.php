@@ -2,8 +2,6 @@
     require_once("dbConnect.php");
 
   
-
-
     function insertData($id, $name, $gender, $email, $password,$created_at, $s_propic){
         
         $query="INSERT INTO student (s_id,s_name,s_gender,s_email,s_password,role,status,created_at,s_propic) VALUES ('$id','$name','$gender','$email','$password',2,1,'$created_at','$s_propic')";
@@ -161,6 +159,47 @@
 
         return mysqli_query($conn, $query);
     }
+
+    function topSearchStudentsByCourseSkillName($me, $q){
+    $conn = dbConnect();
+
+    $me = mysqli_real_escape_string($conn, $me);
+    $q  = mysqli_real_escape_string($conn, $q);
+
+    /*
+      ✅ IMPORTANT:
+      - skill table in your project uses: skill_name (confirmed from your studentHome.php)
+      - course column name in session is: course
+      - I’m assuming your course table is: student_course (s_id, course)
+
+      If your course table name is different, ONLY replace student_course with your real table name.
+    */
+
+    $sql = "
+      SELECT DISTINCT s.s_id, s.s_name, s.s_propic,
+        CONCAT('matched: ', sk.skill_name) AS match_label
+      FROM student s
+      INNER JOIN skills sk ON sk.s_id = s.s_id
+      WHERE s.s_id != '$me'
+        AND s.status = 1
+        AND (sk.skill_name LIKE '%$q%' OR s.s_name LIKE '%$q%')
+
+      UNION
+
+      SELECT DISTINCT s.s_id, s.s_name, s.s_propic,
+        CONCAT('matched: ', sc.course) AS match_label
+      FROM student s
+      INNER JOIN student_course sc ON sc.s_id = s.s_id
+      WHERE s.s_id != '$me'
+        AND s.status = 1
+        AND (sc.course LIKE '%$q%' OR s.s_name LIKE '%$q%')
+
+      ORDER BY s_name ASC
+      LIMIT 20
+    ";
+
+    return mysqli_query($conn, $sql);
+}
 
 
 ?>
