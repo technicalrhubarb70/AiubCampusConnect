@@ -306,7 +306,7 @@ Students can add courses they are currently taking to their CampusConnect profil
 ### Add Course
 
 <p align="center">
-  <img src="screenshot/addcourse.png" alt="AIUB CampusConnect Add Course Page" width="850"/>
+  <img src="screenshot/addcourse.png.jpeg" alt="AIUB CampusConnect Add Course Page" width="850"/>
 </p>
 
 ---
@@ -346,7 +346,7 @@ Students can add their skills and find other students who share similar skills.
 ### Add Skill
 
 <p align="center">
-  <img src="screenshot/addskill.png" alt="AIUB CampusConnect Add Skill Page" width="850"/>
+  <img src="screenshot/addskill.png.jpeg" alt="AIUB CampusConnect Add Skill Page" width="850"/>
 </p>
 
 ---
