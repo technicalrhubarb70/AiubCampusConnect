@@ -10,15 +10,27 @@ Students can search for tutors based on **courses and skills**, explore tutor pr
 
 The goal is to make academic support within AIUB a little more accessible, organized, and student-friendly basically, **students helping students survive university together.**
 
-```markdown
-## Technologies & Tools Used
+## 🛠️ Technologies & Tools Used
 
-- **HTML5** – Structured the web pages
-- **CSS3** – Styled the interface and page layouts
-- **JavaScript** – Added interactivity and client-side validation
-- **PHP** – Handled server-side logic and backend functionality
-- **MySQL** – Stored and managed application data
-- **phpMyAdmin** – Managed and maintained the MySQL database
-- **XAMPP** – Provided the local development environment
-- **PHPMailer** – Handled email functionality
-```
+<p align="center">
+
+**HTML5** • **CSS3** • **JavaScript** • **PHP**  
+**MySQL** • **phpMyAdmin** • **XAMPP** • **PHPMailer**
+
+</p>
+
+### Frontend
+- **HTML5** — Page structure and content
+- **CSS3** — Styling and layout
+- **JavaScript** — Interactivity and client-side validation
+
+### Backend
+- **PHP** — Server-side logic and application functionality
+- **PHPMailer** — Email functionality
+
+### Database
+- **MySQL** — Database storage and management
+- **phpMyAdmin** — Database administration
+
+### Development Environment
+- **XAMPP** — Local Apache, PHP, and MySQL environment
