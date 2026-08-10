@@ -16,7 +16,7 @@ For students taking **open credit courses**, finding someone who has already com
 
 Students can search for tutors based on **courses and skills**, explore tutor profiles, and communicate directly with them. At the same time, students who are confident in a subject can create tutor profiles and help others while sharing what they know.
 
-The goal is to make academic support within AIUB a little more accessible, organized, and student-friendly — basically, **students helping students survive university together.**
+The goal is to make academic support within AIUB a little more accessible, organized, and student-friendly basically, **students helping students survive university together.**
 
 ---
 
