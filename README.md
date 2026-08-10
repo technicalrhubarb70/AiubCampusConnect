@@ -669,15 +669,7 @@ Through the development of AIUB CampusConnect, we gained practical experience wi
 - Role-based systems
 - Relational database relationships
 
----
 
-# 🎓 Academic Information
-
-**Course:** Web Technologies  
-**Institution:** American International University-Bangladesh (AIUB)  
-**Project:** AIUB CampusConnect
-
----
 
 <div align="center">
 
@@ -686,8 +678,5 @@ Through the development of AIUB CampusConnect, we gained practical experience wi
 **Md Rafit Rahad**  
 **Kazi Ayesha**
 
-Made for the **Web Technologies Course at AIUB**
-
-### 💙 Students helping students.
 
 </div>
