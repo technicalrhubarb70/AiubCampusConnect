@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/aiub-logo.png" alt="AIUB Logo" width="120"/>
+<img src="asset/aiub-logo.png" alt="AIUB Logo" width="120"/>
 
 # 🎓 AIUB CampusConnect
 
