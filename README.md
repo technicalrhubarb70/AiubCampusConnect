@@ -579,30 +579,6 @@ http://localhost/AiubCampusConnect/
 
 ---
 
-# 📸 Screenshots
-
-To display the screenshots used in this README, add the following files:
-
-```text
-screenshots/
-├── login.png
-├── student-dashboard.png
-├── messages.png
-├── admin-dashboard.png
-└── database-schema.jpeg
-```
-
-Also add the AIUB logo:
-
-```text
-assets/
-└── aiub-logo.png
-```
-
-> File names and capitalization must match the names used in the README exactly.
-
----
-
 # 🎯 What We Learned
 
 Through the development of AIUB CampusConnect, we gained practical experience with:
