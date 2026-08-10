@@ -128,7 +128,7 @@ Students can communicate directly with tutors through the platform.
 - Student-to-tutor communication
 - Keep academic communication within the platform
 
-### 📸 Screenshot
+### 
 
 <p align="center">
   <img src="screenshot/message.png" alt="Messaging System Screenshot" width="800"/>
@@ -154,7 +154,7 @@ The admin side of CampusConnect helps manage and maintain the platform.
 - CRUD functions
 - Administrative control
 
-### 📸 Screenshot
+### 
 
 <p align="center">
   <img src="screenshot/admin-dashboard.png" alt="Admin Panel Screenshot" width="800"/>
