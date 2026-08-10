@@ -161,7 +161,15 @@ The admin side of CampusConnect helps manage and maintain the platform.
 </p>
 
 ---
+## 🌙 10. Light & Dark Mode
 
+Users can switch between **Light Mode** and **Dark Mode** based on their preference.
+
+**Features:**
+- Light theme
+- Dark theme
+- Toggle between themes
+- Improved viewing experience
 
 
 ```
