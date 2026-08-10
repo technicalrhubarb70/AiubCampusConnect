@@ -164,7 +164,7 @@ We then applied **database normalization** to organize the data properly, reduce
 ### Database Relationship Diagram
 
 <p align="center">
-  <img src="screenshots/database-schema.jpeg" alt="AIUB CampusConnect Database Schema" width="950"/>
+  <img src="screenshot/db.png" alt="AIUB CampusConnect Database Schema" width="950"/>
 </p>
 
 The database connects student accounts with their **courses, skills, tutoring information, free time, messages, and connections**, while keeping authentication and administration organized separately.
