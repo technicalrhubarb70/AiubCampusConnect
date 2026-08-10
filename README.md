@@ -215,7 +215,7 @@ The system provides separate access for students and administrators.
 ### Login Page
 
 <p align="center">
-  <img src="screenshots/login.png" alt="AIUB CampusConnect Login Page" width="850"/>
+  <img src="screenshot/login.png" alt="AIUB CampusConnect Login Page" width="850"/>
 </p>
 
 ---
@@ -259,7 +259,7 @@ The Student Dashboard acts as the central hub for the student side of CampusConn
 ### Student Dashboard
 
 <p align="center">
-  <img src="screenshots/student-dashboard.png" alt="AIUB CampusConnect Student Dashboard" width="850"/>
+  <img src="screenshot/dashboard.png" alt="AIUB CampusConnect Student Dashboard" width="850"/>
 </p>
 
 ---
@@ -441,7 +441,7 @@ Users can:
 ### Messaging System
 
 <p align="center">
-  <img src="screenshots/messages.png" alt="AIUB CampusConnect Messaging System" width="850"/>
+  <img src="screenshot/message.png" alt="AIUB CampusConnect Messaging System" width="850"/>
 </p>
 
 ---
@@ -474,7 +474,7 @@ Administrators have a separate dashboard for managing CampusConnect.
 ### Admin Dashboard
 
 <p align="center">
-  <img src="screenshots/admin-dashboard.png" alt="AIUB CampusConnect Admin Dashboard" width="850"/>
+  <img src="screenshot/admin-dashboard.png" alt="AIUB CampusConnect Admin Dashboard" width="850"/>
 </p>
 
 ---
