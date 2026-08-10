@@ -131,7 +131,7 @@ Students can communicate directly with tutors through the platform.
 ### 📸 Screenshot
 
 <p align="center">
-  <img src="screenshots/messages.png" alt="Messaging System Screenshot" width="800"/>
+  <img src="screenshot/messages.png" alt="Messaging System Screenshot" width="800"/>
 </p>
 
 ---
@@ -157,7 +157,7 @@ The admin side of CampusConnect helps manage and maintain the platform.
 ### 📸 Screenshot
 
 <p align="center">
-  <img src="screenshots/admin.png" alt="Admin Panel Screenshot" width="800"/>
+  <img src="screenshot/admin.png" alt="Admin Panel Screenshot" width="800"/>
 </p>
 
 ---
