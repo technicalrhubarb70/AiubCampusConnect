@@ -331,6 +331,11 @@ CampusConnect can find other students who are taking the same courses.
 This feature is especially helpful for **open credit students** who may not already know other students taking the same course.
 
 ---
+### Course Match
+
+<p align="center">
+  <img src="screenshot/coursematch.png" alt="AIUB CampusConnect Course Match" width="850"/>
+</p>
 
 ## 🧠 8. Skill Management & Skill Matching
 
@@ -352,7 +357,11 @@ Students can add their skills and find other students who share similar skills.
 <p align="center">
   <img src="screenshot/addskill.png.jpeg" alt="AIUB CampusConnect Add Skill Page" width="850"/>
 </p>
+### Skill Match
 
+<p align="center">
+  <img src="screenshot/skillmatch.png" alt="AIUB CampusConnect Skill Match" width="850"/>
+</p>
 ---
 
 ## 🎓 9. Student Tutor System
@@ -422,7 +431,11 @@ This makes it possible to find someone who is academically relevant **and actual
 <p align="center">
   <img src="screenshot/break.png" alt="AIUB CampusConnect Break Time Feature" width="850"/>
 </p>
+### ⏰ Break-Time Match
 
+<p align="center">
+  <img src="screenshot/breakmatch.png" alt="AIUB CampusConnect Break Time Match" width="850"/>
+</p>
 ---
 
 ## 🔎 12. Smart Student Search
@@ -442,7 +455,11 @@ Students can search for other CampusConnect users directly from the dashboard.
 - Show active users
 - Direct messaging from search results
 - Debounced search requests
+### 🔎 Student Search
 
+<p align="center">
+  <img src="screenshot/search.png" alt="AIUB CampusConnect Student Search" width="850"/>
+</p>
 ---
 
 ## 💬 13. Messaging System
