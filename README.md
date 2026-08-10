@@ -388,7 +388,7 @@ Students can offer academic help without needing a separate tutor account.
 
 ---
 
-## 🔍 10. Tutor Search
+## Tutor Search
 
 Students can search for other students offering tutoring for a particular course.
 
@@ -408,7 +408,7 @@ Students can search for other students offering tutoring for a particular course
 
 ---
 
-## ⏰ 11. Free-Time / Break-Time Matching
+## ⏰ 10. Free-Time / Break-Time Matching
 
 Students can enter their university free periods and find people who are available at the same time.
 
@@ -438,7 +438,7 @@ This makes it possible to find someone who is academically relevant **and actual
 </p>
 ---
 
-## 🔎 12. Smart Student Search
+## 🔎 11. Smart Student Search
 
 Students can search for other CampusConnect users directly from the dashboard.
 
@@ -462,7 +462,7 @@ Students can search for other CampusConnect users directly from the dashboard.
 </p>
 ---
 
-## 💬 13. Messaging System
+## 💬 12. Messaging System
 
 CampusConnect includes a built-in messaging system for communication between students and tutors.
 
@@ -508,7 +508,7 @@ Users can:
 
 ---
 
-## 🛡️ 14. Admin Dashboard
+## 🛡️ 13. Admin Dashboard
 
 Administrators have a separate dashboard for managing CampusConnect.
 
@@ -545,7 +545,7 @@ The Admin Dashboard implements the four main CRUD operations:
 
 ---
 
-## 🌙 15. Light & Dark Mode
+## 🌙 14. Light & Dark Mode
 
 CampusConnect includes theme switching for its main dashboards.
 
