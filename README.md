@@ -287,6 +287,10 @@ Students can manage their personal information and account.
 - Delete account
 - Manage account-related information
 
+
+<p align="center">
+  <img src="screenshot/update.png" alt="AIUB CampusConnect Admin Update User Page" width="850"/>
+</p>
 ---
 
 ## 📚 6. Course Management
@@ -521,17 +525,6 @@ The Admin Dashboard implements the four main CRUD operations:
 - **Update** — Edit user information
 - **Delete** — Remove users and associated information
 
-### Create User
-
-<p align="center">
-  <img src="screenshot/create.png" alt="AIUB CampusConnect Admin Create User Page" width="850"/>
-</p>
-
-### Update User
-
-<p align="center">
-  <img src="screenshot/update.png" alt="AIUB CampusConnect Admin Update User Page" width="850"/>
-</p>
 
 ---
 
@@ -673,7 +666,7 @@ Through the development of AIUB CampusConnect, we gained practical experience wi
 
 ## 👩‍💻 Developers
 
-**Rafit Rahad**  
+**Md Rafit Rahad**  
 **Kazi Ayesha**
 
 Made for the **Web Technologies Course at AIUB**
