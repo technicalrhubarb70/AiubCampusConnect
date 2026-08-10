@@ -28,42 +28,26 @@ At the same time, students who are confident in a subject can offer academic hel
 
 # 🛠️ Technologies & Tools
 
-<div align="center">
-
-<img src="https://cdn.simpleicons.org/html5" width="45" alt="HTML5"/>
-&nbsp;&nbsp;
-<img src="https://cdn.simpleicons.org/css" width="45" alt="CSS3"/>
-&nbsp;&nbsp;
-<img src="https://cdn.simpleicons.org/javascript" width="45" alt="JavaScript"/>
-&nbsp;&nbsp;
-<img src="https://cdn.simpleicons.org/php" width="50" alt="PHP"/>
-&nbsp;&nbsp;
-<img src="https://cdn.simpleicons.org/mysql" width="50" alt="MySQL"/>
-&nbsp;&nbsp;
-<img src="https://cdn.simpleicons.org/phpmyadmin" width="50" alt="phpMyAdmin"/>
-&nbsp;&nbsp;
-<img src="https://cdn.simpleicons.org/xampp" width="45" alt="XAMPP"/>
-
-<br><br>
-
 **HTML5 • CSS3 • JavaScript • PHP • MySQL • phpMyAdmin • XAMPP • PHPMailer**
 
-</div>
-
 ### 🎨 Frontend
+
 - **HTML5** — Web page structure
 - **CSS3** — Styling, layouts, themes, and interface design
 - **JavaScript** — Client-side interaction, AJAX functionality, validation, and theme switching
 
 ### ⚙️ Backend
+
 - **PHP** — Server-side logic, authentication, validation, sessions, and database operations
 - **PHPMailer** — Email and OTP functionality
 
 ### 🗄️ Database
+
 - **MySQL** — Relational database management
 - **phpMyAdmin** — Database creation, administration, and testing
 
 ### 💻 Development Environment
+
 - **XAMPP** — Apache, PHP, and MySQL local development environment
 
 ---
@@ -107,14 +91,22 @@ AiubCampusConnect/
 ├── database/
 │   └── aiubcc_db.sql
 │
-├── screenshots/
-│   ├── login.png
-│   ├── student-dashboard.png
-│   ├── messages.png
+├── screenshot/
+│   ├── addcourse.png.jpeg
+│   ├── addskill.png.jpeg
+│   ├── addtutor.png.jpeg
 │   ├── admin-dashboard.png
-│   └── database-schema.jpeg
+│   ├── break.png
+│   ├── create.png
+│   ├── dashboard.png
+│   ├── db.png
+│   ├── forgot.png
+│   ├── login.png
+│   ├── message.png
+│   ├── signin.png
+│   └── update.png
 │
-├── assets/
+├── asset/
 │   └── aiub-logo.png
 │
 ├── index.php
@@ -138,7 +130,7 @@ We then applied **database normalization** to organize the data properly, reduce
 3. Designed the **ER Diagram**
 4. Defined relationships between entities
 5. Applied **database normalization**
-6. Reduced data redundancy
+6. Reduced unnecessary data redundancy
 7. Defined primary keys and related attributes
 8. Converted the ER design into relational tables
 9. Implemented the schema using **MySQL**
@@ -149,7 +141,7 @@ We then applied **database normalization** to organize the data properly, reduce
 ### Main Tables
 
 | Table | Purpose |
-|------|---------|
+| --- | --- |
 | `student` | Stores student account and profile information |
 | `login` | Stores authentication, role, and account-status information |
 | `admin` | Stores administrator information |
@@ -164,7 +156,7 @@ We then applied **database normalization** to organize the data properly, reduce
 ### Database Relationship Diagram
 
 <p align="center">
-  <img src="screenshot/db.png" alt="AIUB CampusConnect Database Schema" width="950"/>
+  <img src="screenshot/db.png" alt="AIUB CampusConnect Database Relationship Diagram" width="950"/>
 </p>
 
 The database connects student accounts with their **courses, skills, tutoring information, free time, messages, and connections**, while keeping authentication and administration organized separately.
@@ -184,7 +176,8 @@ database/aiubcc_db.sql
 Students can register using their AIUB student information and verify their account through email.
 
 **Functionalities:**
-- Student registration
+
+- Student account registration
 - AIUB email validation
 - Input validation
 - Password-strength validation
@@ -196,6 +189,12 @@ Students can register using their AIUB student information and verify their acco
 - Resend OTP
 - PHPMailer-based email delivery
 
+### Registration Page
+
+<p align="center">
+  <img src="screenshot/signin.png" alt="AIUB CampusConnect Registration Page" width="850"/>
+</p>
+
 ---
 
 ## 🔑 2. Login & Role-Based Authentication
@@ -203,6 +202,7 @@ Students can register using their AIUB student information and verify their acco
 The system provides separate access for students and administrators.
 
 **Functionalities:**
+
 - Login using Student/User ID
 - Password verification
 - Session-based authentication
@@ -225,6 +225,7 @@ The system provides separate access for students and administrators.
 Users can recover a forgotten password or securely change their current password.
 
 **Functionalities:**
+
 - Forgot-password recovery
 - Registered email verification
 - OTP generation
@@ -235,6 +236,12 @@ Users can recover a forgotten password or securely change their current password
 - Secure password hashing
 - Existing-password verification
 
+### Forgot Password
+
+<p align="center">
+  <img src="screenshot/forgot.png" alt="AIUB CampusConnect Forgot Password Page" width="850"/>
+</p>
+
 ---
 
 ## 🏠 4. Student Dashboard
@@ -242,6 +249,7 @@ Users can recover a forgotten password or securely change their current password
 The Student Dashboard acts as the central hub for the student side of CampusConnect.
 
 **Functionalities:**
+
 - Personalized dashboard
 - Profile information
 - Profile-picture display
@@ -269,6 +277,7 @@ The Student Dashboard acts as the central hub for the student side of CampusConn
 Students can manage their personal information and account.
 
 **Functionalities:**
+
 - View profile information
 - Update name
 - Update gender
@@ -282,16 +291,23 @@ Students can manage their personal information and account.
 
 ## 📚 6. Course Management
 
-Students can add courses they are currently taking.
+Students can add courses they are currently taking to their CampusConnect profile.
 
 **Functionalities:**
+
 - Add courses
 - Search courses while typing
-- AJAX course suggestions
+- AJAX-based course suggestions
 - Prevent duplicate course entries
 - View selected courses
 - Remove courses
 - Use course information for matching
+
+### Add Course
+
+<p align="center">
+  <img src="screenshot/addcourse.png" alt="AIUB CampusConnect Add Course Page" width="850"/>
+</p>
 
 ---
 
@@ -300,6 +316,7 @@ Students can add courses they are currently taking.
 CampusConnect can find other students who are taking the same courses.
 
 **Functionalities:**
+
 - Compare courses between students
 - Find students with common courses
 - Display matched student information
@@ -316,6 +333,7 @@ This feature is especially helpful for **open credit students** who may not alre
 Students can add their skills and find other students who share similar skills.
 
 **Functionalities:**
+
 - Add personal skills
 - Validate skill input
 - Store multiple skills
@@ -325,6 +343,12 @@ Students can add their skills and find other students who share similar skills.
 - Find matching students
 - Direct messaging from match results
 
+### Add Skill
+
+<p align="center">
+  <img src="screenshot/addskill.png" alt="AIUB CampusConnect Add Skill Page" width="850"/>
+</p>
+
 ---
 
 ## 🎓 9. Student Tutor System
@@ -332,6 +356,7 @@ Students can add their skills and find other students who share similar skills.
 Students can offer academic help without needing a separate tutor account.
 
 **Functionalities:**
+
 - Register as a tutor for specific courses
 - Add multiple tutor courses
 - Search available courses
@@ -342,6 +367,12 @@ Students can offer academic help without needing a separate tutor account.
 - Remove tutoring courses
 - Tutor using the same student account
 
+### Add Tutor Course
+
+<p align="center">
+  <img src="screenshot/addtutor.png.jpeg" alt="AIUB CampusConnect Tutor Setup Page" width="850"/>
+</p>
+
 ---
 
 ## 🔍 10. Tutor Search
@@ -349,6 +380,7 @@ Students can offer academic help without needing a separate tutor account.
 Students can search for other students offering tutoring for a particular course.
 
 **Functionalities:**
+
 - Search tutors by course
 - Live AJAX tutor search
 - Partial course-name matching
@@ -368,6 +400,7 @@ Students can search for other students offering tutoring for a particular course
 Students can enter their university free periods and find people who are available at the same time.
 
 **Functionalities:**
+
 - Set availability from Sunday to Thursday
 - Select multiple time slots
 - Save free time
@@ -380,6 +413,12 @@ Students can enter their university free periods and find people who are availab
 
 This makes it possible to find someone who is academically relevant **and actually free at the same time**.
 
+### Free-Time / Break-Time Setup
+
+<p align="center">
+  <img src="screenshot/break.png" alt="AIUB CampusConnect Break Time Feature" width="850"/>
+</p>
+
 ---
 
 ## 🔎 12. Smart Student Search
@@ -387,6 +426,7 @@ This makes it possible to find someone who is academically relevant **and actual
 Students can search for other CampusConnect users directly from the dashboard.
 
 **Functionalities:**
+
 - Live AJAX search
 - Search by student name
 - Search by course
@@ -406,6 +446,7 @@ Students can search for other CampusConnect users directly from the dashboard.
 CampusConnect includes a built-in messaging system for communication between students and tutors.
 
 **Functionalities:**
+
 - Send messages
 - Receive messages
 - Search users by name or ID
@@ -451,6 +492,7 @@ Users can:
 Administrators have a separate dashboard for managing CampusConnect.
 
 **Functionalities:**
+
 - View registered users
 - Search users by ID
 - Search users by name
@@ -464,17 +506,31 @@ Administrators have a separate dashboard for managing CampusConnect.
 - Update user information
 - Admin logout
 
-### CRUD Operations
-
-- **Create** — Add new users
-- **Read** — View and search users
-- **Update** — Edit user information
-- **Delete** — Remove users and associated records
-
 ### Admin Dashboard
 
 <p align="center">
   <img src="screenshot/admin-dashboard.png" alt="AIUB CampusConnect Admin Dashboard" width="850"/>
+</p>
+
+### CRUD Operations
+
+The Admin Dashboard implements the four main CRUD operations:
+
+- **Create** — Add a new user
+- **Read** — View and search existing users
+- **Update** — Edit user information
+- **Delete** — Remove users and associated information
+
+### Create User
+
+<p align="center">
+  <img src="screenshot/create.png" alt="AIUB CampusConnect Admin Create User Page" width="850"/>
+</p>
+
+### Update User
+
+<p align="center">
+  <img src="screenshot/update.png" alt="AIUB CampusConnect Admin Update User Page" width="850"/>
 </p>
 
 ---
@@ -484,6 +540,7 @@ Administrators have a separate dashboard for managing CampusConnect.
 CampusConnect includes theme switching for its main dashboards.
 
 **Functionalities:**
+
 - Light Mode
 - Dark Mode
 - One-click theme toggle
@@ -618,8 +675,6 @@ Through the development of AIUB CampusConnect, we gained practical experience wi
 
 **Rafit Rahad**  
 **Kazi Ayesha**
-
-<br>
 
 Made for the **Web Technologies Course at AIUB**
 
