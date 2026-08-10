@@ -78,6 +78,11 @@ Users can create an account and securely log in to AIUB CampusConnect.
 - Input validation
 - Session-based authentication
 
+### Login Page
+
+<p align="center">
+  <img src="screenshot/login.png" alt="AIUB CampusConnect Login Page" width="850"/>
+</p>
 
 ## 👤 2. Student Profile
 
@@ -87,6 +92,12 @@ Students can maintain their personal information and use their account to access
 - View student profile
 - Manage account information
 - Access student-specific features
+
+### Student Dashboard
+
+<p align="center">
+  <img src="screenshot/dashboard.png" alt="AIUB CampusConnect Student Dashboard" width="850"/>
+</p>
 
 ## 🎓 3. Tutor Profile
 
